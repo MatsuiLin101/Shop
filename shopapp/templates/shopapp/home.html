@@ -1,12 +1,37 @@
-<!DOCTYPE html>
-<head>
-  <meta charset="UTF-8">
-  <title>Home</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
+{% block title %}Shop Home{% endblock %}
+
+{% block content %}
 Home <br />
 <br />
+{% for p in products %}
+    <table>
+        <tr>
+            <td>Product Category</td>
+            <td>{{ p.category }}</td>
+        </tr>
+        <tr>
+            <td>Product Name</td>
+            <td>{{ p.name }}</td>
+        </tr>
+        <tr>
+            <td>Product Price</td>
+            <td>{{ p.price }}</td>
+        </tr>
+        <tr>
+            <td>Product Quantity</td>
+            <td>{{ p.quantity }}</td>
+        </tr>
+        <tr>
+            <td>Product Description</td>
+            <td>{{ p.description }}</td>
+        </tr>
+        <tr>
+            <td>Product Image</td>
+            <td><img src="media/{{ p.img }}" style="height:100px;" /></td>
+        </tr>
+    </table>
+{% endfor %}
 
-</body>
-</html>
+{% endblock %}
