@@ -25,7 +25,9 @@ SECRET_KEY = 'mvl3=7rx94j$%llcx^7904l!-elna**icm!qzjiwijei19har3'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+]
 
 
 # Application definition
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'shopapp',
 ]
 
 MIDDLEWARE = [
