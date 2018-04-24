@@ -97,6 +97,23 @@ def edit_category(request, id):
 
 def edit_product(request, id):
 
+    product = models.Product.objects.get(id=id)
 
+    if request.method == "POST":
+        category = request.POST["category"]
+        name = request.POST["name"]
+        price = request.POST["price"]
+        quantity = request.POST["quantity"]
+        description = request.POST["description"]
+        img_file = request.FILES["img"]
+        img_name = request.FILES["img"].name
+        img_path = "shopapp/" + img_name
+        model_create = models.Product.objects.create(category=models.Category.objects.get(id=category), name=name, price=price, quantity=quantity, description=description)
+        model_create.img = FileSystemStorage().save(img_path, img_file)
+        model_create.save()
+
+        return redirect(admin_dashboard)
+    else:
+        form = forms.ProductForm(instance=product)
 
     return render(request, 'shopapp/edit_product.html', locals())
