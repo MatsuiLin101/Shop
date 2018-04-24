@@ -9,6 +9,7 @@ import random, string
 
 def home(request):
 
+    categories = models.Category.objects.all()
     products = models.Product.objects.all()
 
     return render(request, 'shopapp/home.html', locals())
@@ -58,3 +59,11 @@ def add_category(request):
         form = forms.CategoryForm()
 
     return render(request, 'shopapp/add_category.html', locals())
+
+def shop_category(request, category):
+
+    category = models.Category.objects.get(name=category)
+    categories = models.Category.objects.all()
+    products = models.Product.objects.filter(category=category)
+
+    return render(request, 'shopapp/shop_category.html', locals())
