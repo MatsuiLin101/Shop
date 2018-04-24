@@ -21,7 +21,7 @@
               <h3>Category</h3>
                   <li><a href="/dashboard" class="btn btn-link">All</a></li>
               {% for c in categories %}
-                  <li><a href="/dashboard/{{ c.name }}" class="btn btn-link">{{ c.name }}</a></li>
+                  <li><a href="/dashboard/{{ c.name }}" class="btn btn-link">{{ c.name }}</a><a href="{% url 'edit-category' c.id %}" class="glyphicon glyphicon-edit"></a></li>
               {% endfor %}
             </ul>
         </div>

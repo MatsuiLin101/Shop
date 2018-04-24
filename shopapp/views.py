@@ -82,3 +82,21 @@ def dashboard_category(request, category):
     products = models.Product.objects.filter(category=category)
 
     return render(request, 'shopapp/dashboard_category.html', locals())
+
+def edit_category(request, id):
+
+    category = models.Category.objects.get(id=id)
+
+    if request.method == "POST":
+        category.name = request.POST["name"]
+        category.save()
+
+        return redirect(admin_dashboard)
+
+    return render(request, 'shopapp/edit_category.html', locals())
+
+def edit_product(request, id):
+
+
+
+    return render(request, 'shopapp/edit_product.html', locals())
