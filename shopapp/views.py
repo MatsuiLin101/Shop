@@ -29,7 +29,7 @@ def add_product(request):
         model_create.img = FileSystemStorage().save(img_path, img_file)
         model_create.save()
 
-        return redirect(home)
+        return redirect(admin_dashboard)
     else:
         form = forms.ProductForm()
 
@@ -50,7 +50,7 @@ def add_category(request):
                 if form.is_valid:
                     form.save()
 
-                    return redirect(home)
+                    return redirect(admin_dashboard)
             except:
                 message = "Please input category name or the name is exsits."
 
