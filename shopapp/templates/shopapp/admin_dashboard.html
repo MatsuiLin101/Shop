@@ -47,7 +47,7 @@
                           <h4>{{ p.name }}</h4>
                           <p>${{ p.price }}</p>
                           <p>Quantity: {{ p.quantity }}</p>
-                          <p>{{ p.description|truncatechars:20 }}</p>
+                          <p>{{ p.description|truncatechars:19 }}</p>
                           <a href="{% url 'edit-product' p.id %}" class="btn btn-primary glyphicon glyphicon-edit">Edit</a>
                           <a href="#"class="btn btn-danger glyphicon glyphicon-trash pull-right">Delete</a>
                       </div>
