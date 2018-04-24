@@ -8,6 +8,13 @@
 <br />
 <div class="container">
     <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="page-header">
+                <h1 class="text-center">Backend</h1>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-2 col-md-offset-2">
             <a href="{% url 'add-product' %}" class="btn btn-lg btn-primary">Add Product</a>
         </div>
@@ -21,35 +28,56 @@
             <a href="{% url 'add-product' %}" class="btn btn-lg btn-primary">Edit Category</a>
         </div>
     </div>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <div class="col-md-9">
+          {% for p in products %}
+              {% cycle '<div class="row"> <div class="col-md-3">' '<div class="col-md-3">' '<div class="col-md-3">' '<div class="col-md-3">' %}
+                  <div class="thumbnail">
+                      <img src="media/{{ p.img }}" />
+                      <div class="caption">
+                          <h4>{{ p.name }}</h4>
+                          <p>${{ p.price }}</p>
+                          <p>Quantity: {{ p.quantity }}</p>
+                          <p>{{ p.description }}</p>
+                          <button class="btn btn-primary">Add to Cart</button>
+                      </div>
+                  </div>
+                </div>
+              {% cycle '' '' '' '</div>' %}
+          {% endfor %}
+        </div>
+        <ul class="pagination">
+           <li>
+               <a href="#">Prev</a>
+           </li>
+           <li>
+               <a href="#">1</a>
+           </li>
+           <li>
+               <a href="#">2</a>
+           </li>
+           <li>
+               <a href="#">3</a>
+           </li>
+           <li>
+               <a href="#">4</a>
+           </li>
+           <li>
+               <a href="#">5</a>
+           </li>
+           <li>
+               <a href="#">Next</a>
+           </li>
+        </ul>
+    </div>
+    <br />
+    <br />
 </div>
 <br />
-{% for p in products %}
-    <table>
-        <tr>
-            <td>Product Category</td>
-            <td>{{ p.category }}</td>
-        </tr>
-        <tr>
-            <td>Product Name</td>
-            <td>{{ p.name }}</td>
-        </tr>
-        <tr>
-            <td>Product Price</td>
-            <td>{{ p.price }}</td>
-        </tr>
-        <tr>
-            <td>Product Quantity</td>
-            <td>{{ p.quantity }}</td>
-        </tr>
-        <tr>
-            <td>Product Description</td>
-            <td>{{ p.description }}</td>
-        </tr>
-        <tr>
-            <td>Product Image</td>
-            <td><img src="media/{{ p.img }}" style="height:100px;" /></td>
-        </tr>
-    </table>
-{% endfor %}
 
 {% endblock %}
