@@ -34,7 +34,7 @@
                             <h4>{{ p.name }}</h4>
                             <p>${{ p.price }}</p>
                             <p>Quantity: {{ p.quantity }}</p>
-                            <p>{{ p.description }}</p>
+                            <p>{{ p.description|truncatechars:20 }}</p>
                             <button class="btn btn-success">Add to Cart</button>
                         </div>
                     </div>

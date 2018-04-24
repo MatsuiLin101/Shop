@@ -67,3 +67,18 @@ def shop_category(request, category):
     products = models.Product.objects.filter(category=category)
 
     return render(request, 'shopapp/shop_category.html', locals())
+
+def admin_dashboard(request):
+
+    categories = models.Category.objects.all()
+    products = models.Product.objects.all()
+
+    return render(request, 'shopapp/admin_dashboard.html', locals())
+
+def dashboard_category(request, category):
+
+    category = models.Category.objects.get(name=category)
+    categories = models.Category.objects.all()
+    products = models.Product.objects.filter(category=category)
+
+    return render(request, 'shopapp/dashboard_category.html', locals())
