@@ -4,5 +4,12 @@ from . import models
 
 # Register your models here.
 
-admin.site.register(models.Category)
-admin.site.register(models.Product)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+
+
+admin.site.register(models.Category, CategoryAdmin)
+admin.site.register(models.Product, ProductAdmin)

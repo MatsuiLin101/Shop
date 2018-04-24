@@ -5,7 +5,9 @@
 {% block content %}
 Home <br />
 <br />
-<a href="{% url 'add-item' %}">add item</a><br />
+<a href="{% url 'add-product' %}">add item</a><br />
+<br />
+<a href="{% url 'add-category' %}">add category</a><br />
 <br />
 {% for p in products %}
     <table>

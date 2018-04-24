@@ -24,5 +24,6 @@ from shopapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name="home"),
-    path('add_item/', views.add_item, name="add-item"),
+    path('add_product/', views.add_product, name="add-product"),
+    path('add_category/', views.add_category, name="add-category"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

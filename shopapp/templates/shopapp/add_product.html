@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Item{% endblock %}
+
+{% block content %}
+
+Add Item <br />{{ category }}
+<br />
+<a href="{% url 'home' %}">Back</a><br />
+<br />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                  <table class="table">
+                {% for f in form %}
+                    <tr>
+                        <td>
+                            <label>{{ f.name }}</label>
+                        </td>
+                        <td>
+                            {{ f }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                    <tr>
+                        <td colspan="2">
+                            <input type="submit" value="New" class="pull-right">
+                        </td>
+                    </tr>
+                  </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
