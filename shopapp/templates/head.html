@@ -1,12 +1,20 @@
 {% block navbar %}
 <div class="nav navbar-default navbar-fixed-top">
     <div class="container-fluid">
-        <div class="">
-           <a href="#" class="navbar-brand">Home</a>
+        <div class="navbar-header">
+           <a href="{% url 'home' %}" class="navbar-brand">Home</a>
         </div>
-        <ul class="nav navbar-nav">
-            <li><a href="#" data-toggle="tab">1</a></li>
-        </ul>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="#" data-toggle="tab">1</a></li>
+            </ul>
+        </div>
+        <div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">Login/Signup</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
     </div>
 </div>
 {% endblock %}
