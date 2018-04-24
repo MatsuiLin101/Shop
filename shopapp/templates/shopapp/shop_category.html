@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Shop Home{% endblock %}
+{% block title %}101SHOP{% endblock %}
 
 {% block content %}
 
@@ -19,6 +19,7 @@
         <div class="col-md-2">
             <ul>
               <h3>Category</h3>
+                  <li><a href="/" class="btn btn-link">All</a></li>
               {% for c in categories %}
                   <li><a href="/category/{{ c.name }}" class="btn btn-link">{{ c.name }}</a></li>
               {% endfor %}
@@ -34,7 +35,7 @@
                             <p>${{ p.price }}</p>
                             <p>Quantity: {{ p.quantity }}</p>
                             <p>{{ p.description }}</p>
-                            <button class="btn btn-primary">Add to Cart</button>
+                            <button class="btn btn-success">Add to Cart</button>
                         </div>
                     </div>
                   </div>
