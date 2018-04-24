@@ -108,3 +108,10 @@ def edit_product(request, id):
         form = forms.ProductForm(instance=product)
 
     return render(request, 'shopapp/edit_product.html', locals())
+
+def delete_category(request, id):
+
+    category = models.Category.objects.get(id=id)
+    category.delete()
+
+    return redirect(admin_dashboard)
