@@ -3,11 +3,25 @@
 {% block title %}Shop Home{% endblock %}
 
 {% block content %}
-Home <br />
+
 <br />
-<a href="{% url 'add-product' %}">add item</a><br />
 <br />
-<a href="{% url 'add-category' %}">add category</a><br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-2 col-md-offset-2">
+            <a href="{% url 'add-product' %}" class="btn btn-lg btn-primary">Add Product</a>
+        </div>
+        <div class="col-md-2">
+            <a href="{% url 'add-category' %}" class="btn btn-lg btn-primary">Add Category</a>
+        </div>
+        <div class="col-md-2">
+            <a href="{% url 'add-product' %}" class="btn btn-lg btn-primary">Edit Product</a>
+        </div>
+        <div class="col-md-2">
+            <a href="{% url 'add-product' %}" class="btn btn-lg btn-primary">Edit Category</a>
+        </div>
+    </div>
+</div>
 <br />
 {% for p in products %}
     <table>
