@@ -7,6 +7,11 @@
   height: 100px;
 }
 
+.product-img-detail {
+  width: 200px;
+  height: 200px;
+}
+
 .glyphicon-edit {
   font-size: 10px;
 }

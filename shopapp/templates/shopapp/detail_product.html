@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}101SHOP - {{ product.name }}{% endblock %}
+
+{% block script %}
+
+<script>
+    $(function() {
+        $("#countdown").click(function() {
+            if ( parseInt($("#total").html()) > 0 ) {
+                $("#total").html( parseInt($("#total").html()) - 1 );
+            } else {
+                alert("quantity can't lower 0");
+            }
+        });
+
+        $("#countup").click(function() {
+            $("#total").html( parseInt($("#total").html()) + 1 );
+        });
+    });
+</script>
+
+{% endblock %}
+
+
+{% block content %}
+
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="page-header">
+                <h1 class="text-center">{{ product.name }}</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2">
+            <ul>
+              <h3>Category</h3>
+                  <li><a href="/" class="btn btn-link">All</a></li>
+              {% for c in categories %}
+                  <li><a href="/category/{{ c.name }}" class="btn btn-link">{{ c.name }}</a></li>
+              {% endfor %}
+            </ul>
+        </div>
+        <div class="col-md-10">
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <img src="/media/{{ product.img }}" class="product-img-detail" />
+                    </td>
+                    <td class="text-left">
+                        name: {{ product.name }}<br />
+                        <br />
+                        price: {{ product.price }}<br />
+                        <br />
+                        quantity: {{ product.quantity }}<br />
+                        <br />
+                        <button id="countdown" class="btn btn-default">-</button><button id="total" class="btn btn-default">0</button><button id="countup" class="btn btn-default">+</button><br />
+                        <br />
+                        <button class="btn btn-success btn-block">Add to Cart</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        {{ product.description }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <br />
+    <br />
+</div>
+<br />
+
+{% endblock %}

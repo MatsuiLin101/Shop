@@ -100,7 +100,7 @@ def edit_product(request, id):
     product = models.Product.objects.get(id=id)
 
     if request.method == "POST":
-        form = forms.ProductForm(request.POST, request.FILES,instance=product)
+        form = forms.ProductForm(request.POST, request.FILES, instance=product)
         if form.is_valid():
             form.save()
             return redirect(admin_dashboard)
@@ -115,3 +115,18 @@ def delete_category(request, id):
     category.delete()
 
     return redirect(admin_dashboard)
+
+def delete_product(request, id):
+
+    product = models.Product.objects.get(id=id)
+    product.img.delete(save=True)
+    product.delete()
+
+    return redirect(admin_dashboard)
+
+def detail_product(request, id):
+
+    categories = models.Category.objects.all()
+    product = models.Product.objects.get(id=id)
+
+    return render(request, 'shopapp/detail_product.html', locals())

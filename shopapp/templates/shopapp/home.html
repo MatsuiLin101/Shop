@@ -29,13 +29,15 @@
           {% for p in products %}
               {% cycle '<div class="row"> <div class="col-md-3">' '<div class="col-md-3">' '<div class="col-md-3">' '<div class="col-md-3">' %}
                   <div class="thumbnail">
-                      <img src="media/{{ p.img }}" class="product-img"/>
+                      <a href="{% url 'detail-product' p.id %}">
+                          <img src="media/{{ p.img }}" class="product-img"/>
+                      </a>
                       <div class="caption">
                           <h4>{{ p.name }}</h4>
                           <p>${{ p.price }}</p>
                           <p>Quantity: {{ p.quantity }}</p>
                           <p>{{ p.description|truncatechars:20 }}</p>
-                          <button class="btn btn-success">Add to Cart</button>
+                          <button class="btn btn-success btn-block">Add to Cart</button>
                       </div>
                   </div>
                 </div>
