@@ -7,19 +7,62 @@
 
 <script>
     $(function() {
+
+        // minus quantity
         $(".btn-down").click(function() {
             var pid = $(this).attr("id");
+            var unitprice = $("#unitp" + pid).html();
+            var subtotal= $("#sub" + pid).html();
             $("#qty" + pid).html(parseInt($("#qty" + pid).html()) - 1);
             if (parseInt($("#qty" + pid).html()) === 0) {
                 $("#div" + pid).hide();
+                return;
             }
+            var qty = parseInt($("#qty" + pid).html());
+            unitprice = unitprice.split(" ");
+            for (var i = 0; i < unitprice.length; i++) {
+                if (unitprice[i] == "NT$") {
+                    unitprice = parseInt(unitprice[i+1]);
+                    break;
+                }
+            }
+            subtotal = subtotal.split(" ");
+            for (var i = 0; i < subtotal.length; i++) {
+                if (subtotal[i] == "NT$") {
+                    subtotal = parseInt(subtotal[i+1]);
+                    break;
+                }
+            }
+            subtotal = unitprice * qty;
+            $("#sub" + pid).html("NT$ " + subtotal);
         });
 
+        // add quantity
         $(".btn-up").click(function() {
             var pid = $(this).attr("id");
+            var unitprice = $("#unitp" + pid).html();
+            var subtotal= $("#sub" + pid).html();
             $("#qty" + pid).html(parseInt($("#qty" + pid).html()) + 1);
+            unitprice = unitprice.split(" ");
+            for (var i = 0; i < unitprice.length; i++) {
+                if (unitprice[i] == "NT$") {
+                    unitprice = parseInt(unitprice[i+1]);
+                    break;
+                }
+            }
+            subtotal = subtotal.split(" ");
+            for (var i = 0; i < subtotal.length; i++) {
+                if (subtotal[i] == "NT$") {
+                    subtotal = parseInt(subtotal[i+1]);
+                    break;
+                }
+            }
+            var qty = parseInt($("#qty" + pid).html());
+            subtotal = unitprice * qty;
+            $("#sub" + pid).html("NT$ " + subtotal);
         });
 
+        // del product
         $(".product-del").click(function() {
             var pid = $(this).attr("id");
             $("#div" + pid).hide();
@@ -77,13 +120,13 @@
                 <div class="col-md-1">
                     <td>{{ p.2 }}</td>
                 </div>
-                <div class="col-md-2">
+                <div id="unitp{{ p.6 }}" class="col-md-2">
                     <td>NT$ {{ p.3 }}</td>
                 </div>
                 <div class="col-md-2 cart-btn">
                     <button id="{{ p.6 }}" class="btn btn-default btn-down">-</button><button id="qty{{ p.6 }}" class="btn btn-default btn-total">{{ p.4 }}</button><button id="{{ p.6 }}" class="btn btn-default btn-up">+</button>
                 </div>
-                <div class="col-md-2">
+                <div id="sub{{ p.6 }}" class="col-md-2">
                     <td>NT$ {{ p.5 }}</td>
                 </div>
                 <div class="col-md-1 cart-delete">

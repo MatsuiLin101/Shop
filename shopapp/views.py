@@ -148,9 +148,9 @@ def cart(request):
     for c in carts:
         product = models.Product.objects.get(id=c[0])
         img = product.img
-        price = product.price
         quantity = product.quantity
-        subtotal = price * quantity
+        price = product.price
+        subtotal = price * c[1]
         pid = product.id
         products.append([img, product, quantity, price, c[1], subtotal, pid])
 
