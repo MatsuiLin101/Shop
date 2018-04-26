@@ -139,6 +139,20 @@ def cart(request):
 
     if "cart" in request.session:
         carts = request.session["cart"]
+    else:
+        message = "No product in cart"
+
+        return render(request, 'shoaapp/cart.html', locals())
+
+    products = []
+    for c in carts:
+        product = models.Product.objects.get(id=c[0])
+        img = product.img
+        price = product.price
+        quantity = product.quantity
+        subtotal = price * quantity
+        pid = product.id
+        products.append([img, product, quantity, price, c[1], subtotal, pid])
 
     return render(request, 'shopapp/cart.html', locals())
 
@@ -151,7 +165,7 @@ def add_cart(request, pid, quantity):
         request.session["cart"] = carts
         message = "add to cart"
     else:
-        carts = list(request.session["cart"])
+        carts = request.session["cart"]
 
         for c in carts:
             if c[0] == pid:

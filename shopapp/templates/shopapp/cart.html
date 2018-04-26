@@ -3,6 +3,34 @@
 {% block title %}101SHOP - Cart{% endblock %}
 
 
+{% block script %}
+
+<script>
+    $(function() {
+        $(".btn-down").click(function() {
+            var pid = $(this).attr("id");
+            $("#qty" + pid).html(parseInt($("#qty" + pid).html()) - 1);
+            if (parseInt($("#qty" + pid).html()) === 0) {
+                $("#div" + pid).hide();
+            }
+        });
+
+        $(".btn-up").click(function() {
+            var pid = $(this).attr("id");
+            $("#qty" + pid).html(parseInt($("#qty" + pid).html()) + 1);
+        });
+
+        $(".product-del").click(function() {
+            var pid = $(this).attr("id");
+            $("#div" + pid).hide();
+        });
+    });
+
+</script>
+
+{% endblock %}
+
+
 {% block content %}
 
 <br />
@@ -15,12 +43,58 @@
             </div>
         </div>
     </div>
-    {% for c in carts %}
-        {{ c.0 }}{{ c.1 }}<br />
-    {% endfor %}
-    <br />
-    <br />
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="row cart-title">
+                <div class="col-md-4">
+                    <td>Product Information</td>
+                </div>
+                <div class="col-md-1">
+                    <td>Inventory</td>
+                </div>
+                <div class="col-md-2">
+                    <td>Unit Price</td>
+                </div>
+                <div class="col-md-2">
+                    <td>Quantity</td>
+                </div>
+                <div class="col-md-2">
+                    <td>Subtotal</td>
+                </div>
+                <div class="col-md-1">
+                    <td></td>
+                </div>
+            </div>
+            {% for p in products %}
+            <div id="div{{ p.6 }}" class="row cart-text">
+                <div class="col-md-2">
+                    <td><img src="/media/{{ p.0 }}" class="product-img"/></td>
+                </div>
+                <div class="col-md-2">
+                    {{ p.1 }}
+                </div>
+                <div class="col-md-1">
+                    <td>{{ p.2 }}</td>
+                </div>
+                <div class="col-md-2">
+                    <td>NT$ {{ p.3 }}</td>
+                </div>
+                <div class="col-md-2 cart-btn">
+                    <button id="{{ p.6 }}" class="btn btn-default btn-down">-</button><button id="qty{{ p.6 }}" class="btn btn-default btn-total">{{ p.4 }}</button><button id="{{ p.6 }}" class="btn btn-default btn-up">+</button>
+                </div>
+                <div class="col-md-2">
+                    <td>NT$ {{ p.5 }}</td>
+                </div>
+                <div class="col-md-1 cart-delete">
+                    <span id="{{ p.6 }}" class="glyphicon glyphicon-trash product-del"></span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
 </div>
-<br />
 
 {% endblock %}

@@ -19,3 +19,36 @@
 .glyphicon-trash {
   font-size: 10px;
 }
+
+.cart-text {
+  height: 100px;
+  line-height: 100px;
+  text-align: center;
+  vertical-align: middle;
+  margin-bottom: 5px;
+}
+
+.cart-btn {
+  margin-top: 33px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cart-title {
+  height: 10px;
+  line-height: 10px;
+  text-align: center;
+  vertical-align: middle;
+  margin-bottom: 5px;
+}
+
+.cart-delete {
+  height: 100px;
+  line-height: 100px;
+}
+
+.cart-delete > span {
+  margin-top: 43px;
+  margin-left: auto;
+  margin-right: auto;
+}
