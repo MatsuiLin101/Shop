@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse
 
 from . import models, forms
 
@@ -8,6 +9,9 @@ import random, string
 # Create your views here.
 
 def home(request):
+
+#    if "cart" in request.session:
+#        del request.session["cart"]
 
     categories = models.Category.objects.all()
     products = models.Product.objects.all()
@@ -130,3 +134,36 @@ def detail_product(request, id):
     product = models.Product.objects.get(id=id)
 
     return render(request, 'shopapp/detail_product.html', locals())
+
+def cart(request):
+
+    if "cart" in request.session:
+        carts = request.session["cart"]
+
+    return render(request, 'shopapp/cart.html', locals())
+
+def add_cart(request, pid, quantity):
+
+    if not "cart" in request.session:
+        cart = [pid, quantity]
+        carts = []
+        carts.append(cart)
+        request.session["cart"] = carts
+        message = "add to cart"
+    else:
+        carts = list(request.session["cart"])
+
+        for c in carts:
+            if c[0] == pid:
+                c[1] = c[1] + quantity
+                message = "add to cart"
+                request.session["cart"] = carts
+
+                return HttpResponse(message)
+
+        cart = [pid, quantity]
+        carts.append(cart)
+        request.session["cart"] = carts
+        message = "add to cart"
+
+    return HttpResponse(message)

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}101SHOP - Cart{% endblock %}
+
+
+{% block content %}
+
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="page-header">
+                <h1 class="text-center">Cart</h1>
+            </div>
+        </div>
+    </div>
+    {% for c in carts %}
+        {{ c.0 }}{{ c.1 }}<br />
+    {% endfor %}
+    <br />
+    <br />
+</div>
+<br />
+
+{% endblock %}
