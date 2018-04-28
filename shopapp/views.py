@@ -181,3 +181,34 @@ def add_cart(request, pid, quantity):
         message = "add to cart"
 
     return HttpResponse(message)
+
+def edit_cart(request, pid, qty):
+
+    carts = request.session["cart"]
+    for c in carts:
+        if c[0] == pid:
+            if qty == 1:
+                c[1] = c[1] + qty
+                message = "edit add qty"
+            else:
+                c[1] = c[1] - 1
+                message = "edit minus qty"
+            request.session["cart"] = carts
+
+            return HttpResponse(message)
+
+    message = "edit error"
+
+    return HttpResponse(message)
+
+def del_cart(request, pid):
+
+    carts = request.session["cart"]
+    new_carts = []
+    for c in carts:
+        if c[0] != pid:
+            new_carts.append(c)
+    request.session["cart"] = new_carts
+    message = "del product"
+
+    return HttpResponse(message)
