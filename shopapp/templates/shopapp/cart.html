@@ -14,6 +14,13 @@
             var unitprice = $("#unitp" + pid).html();
             var subtotal= $("#sub" + pid).html();
             $("#qty" + pid).html(parseInt($("#qty" + pid).html()) - 1);
+            var qty = parseInt($("#qty" + pid).html());
+            unitprice = unitprice.split("$ ");
+//            unitprice = unitprice[1].split(" ");
+            unitprice = parseInt(unitprice[1]);
+            subtotal = subtotal.split("$ ");
+//            subtotal = subtotal[1].split(" ");
+            subtotal = parseInt(subtotal[1]);
             if (parseInt($("#qty" + pid).html()) === 0) {
                 $("#div" + pid).hide();
                 $.ajax({
@@ -22,17 +29,15 @@
                     success: function(message) {
                         $("#div" + pid).hide();
                         alert(message);
+                        var total = $("#total").html();
+                        total = total.split("$ ");
+                        total = parseInt(total[1]) - unitprice;
+                        alert(total);
+                        $("#total").html("NT$ " + total);
                     }
                 })
                 return;
             }
-            var qty = parseInt($("#qty" + pid).html());
-            unitprice = unitprice.split("$");
-            unitprice = unitprice[1].split(" ");
-            unitprice = parseInt(unitprice[1]);
-            subtotal = subtotal.split("$");
-            subtotal = subtotal[1].split(" ");
-            subtotal = parseInt(subtotal[1]);
 //            unitprice = unitprice.split(" ");
 //            for (var i = 0; i < unitprice.length; i++) {
 //                if (unitprice[i] == "NT$") {
@@ -54,6 +59,11 @@
                 type: "GET",
                 success: function(message){
                     alert(message);
+                    var total = $("#total").html();
+                    total = total.split("$ ");
+                    total = parseInt(total[1]) - unitprice;
+                    alert(total);
+                    $("#total").html("NT$ " + total);
                 }
             })
         });
@@ -65,11 +75,11 @@
             var subtotal= $("#sub" + pid).html();
             $("#qty" + pid).html(parseInt($("#qty" + pid).html()) + 1);
             var qty = parseInt($("#qty" + pid).html());
-            unitprice = unitprice.split("$");
-            unitprice = unitprice[1].split(" ");
+            unitprice = unitprice.split("$ ");
+//            unitprice = unitprice[1].split(" ");
             unitprice = parseInt(unitprice[1]);
-            subtotal = subtotal.split("$");
-            subtotal = subtotal[1].split(" ");
+            subtotal = subtotal.split("$ ");
+//            subtotal = subtotal[1].split(" ");
             subtotal = parseInt(subtotal[1]);
 //            unitprice = unitprice.split(" ");
 //            for (var i = 0; i < unitprice.length; i++) {
@@ -92,6 +102,11 @@
                 type: "GET",
                 success: function(message){
                     alert(message);
+                    var total = $("#total").html();
+                    total = total.split("$ ");
+                    total = parseInt(total[1]) + unitprice;
+                    alert(total);
+                    $("#total").html("NT$ " + total);
                 }
             })
         });
@@ -105,6 +120,13 @@
                 success: function(message) {
                     $("#div" + pid).hide();
                     alert(message);
+                    var total = $("#total").html();
+                    total = total.split("$ ");
+                    var subtotal = $("#sub" + pid).html();
+                    subtotal = subtotal.split("$ ");
+                    total = parseInt(total[1]) - parseInt(subtotal[1]);
+                    alert(total);
+                    $("#total").html("NT$ " + total);
                 }
             })
         });
@@ -131,45 +153,58 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
             <div class="row cart-title">
+                <!-- product img and name -->
                 <div class="col-md-4">
                     <td>Product Information</td>
                 </div>
+                <!-- product inventory -->
                 <div class="col-md-1">
                     <td>Inventory</td>
                 </div>
+                <!-- product unitprice -->
                 <div class="col-md-2">
                     <td>Unit Price</td>
                 </div>
+                <!-- product quantity -->
                 <div class="col-md-2">
                     <td>Quantity</td>
                 </div>
+                <!-- product subtotal -->
                 <div class="col-md-2">
                     <td>Subtotal</td>
                 </div>
+                <!-- del product -->
                 <div class="col-md-1">
                     <td></td>
                 </div>
             </div>
             {% for p in products %}
             <div id="div{{ p.6 }}" class="row cart-text">
+                <!-- product img -->
                 <div class="col-md-2">
                     <td><img src="/media/{{ p.0 }}" class="product-img"/></td>
                 </div>
+                <!-- product name -->
                 <div class="col-md-2">
                     {{ p.1 }}
                 </div>
+                <!-- product inventory -->
                 <div class="col-md-1">
                     <td>{{ p.2 }}</td>
                 </div>
+                <!-- unitprice -->
                 <div id="unitp{{ p.6 }}" class="col-md-2">
                     <td>NT$ {{ p.3 }}</td>
                 </div>
+                <!-- change quantity -->
                 <div class="col-md-2 cart-btn">
                     <button id="{{ p.6 }}" class="btn btn-default btn-down">-</button><button id="qty{{ p.6 }}" class="btn btn-default btn-total">{{ p.4 }}</button><button id="{{ p.6 }}" class="btn btn-default btn-up">+</button>
                 </div>
+                <!-- subtotal -->
                 <div id="sub{{ p.6 }}" class="col-md-2">
                     <td>NT$ {{ p.5 }}</td>
                 </div>
+                <!-- del product -->
                 <div class="col-md-1 cart-delete">
                     <span id="{{ p.6 }}" class="glyphicon glyphicon-trash product-del"></span>
                 </div>
@@ -178,7 +213,18 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-7 col-md-offset-1">
+
+        </div>
+        <div class="col-md-3">
+            <label class="pull-left">Total: </label><label id="total" class="pull-right">NT$ {{ total }}</label><br />
+            <button class="btn btn-block">Checkout</button>
+        </div>
+    </div>
 
 </div>
-
+<br />
+<br />
+<br />
 {% endblock %}

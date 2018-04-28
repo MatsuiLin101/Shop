@@ -8,7 +8,13 @@
 <script>
     $(function() {
         $("button").click(function() {
-            alert($(this).attr("id"));
+            $.ajax({
+                url: "/add_cart/" + $(this).attr("id") + "/" + 1,
+                type: "GET",
+                success: function(message) {
+                    alert(message);
+                }
+            })
         });
     });
 </script>

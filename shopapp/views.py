@@ -144,6 +144,7 @@ def cart(request):
 
         return render(request, 'shoaapp/cart.html', locals())
 
+    total = 0
     products = []
     for c in carts:
         product = models.Product.objects.get(id=c[0])
@@ -151,6 +152,7 @@ def cart(request):
         quantity = product.quantity
         price = product.price
         subtotal = price * c[1]
+        total += subtotal
         pid = product.id
         products.append([img, product, quantity, price, c[1], subtotal, pid])
 
