@@ -136,7 +136,6 @@ def detail_product(request, id):
     return render(request, 'shopapp/detail_product.html', locals())
 
 def cart(request):
-
     if "cart" in request.session:
         carts = request.session["cart"]
     else:
@@ -214,3 +213,21 @@ def del_cart(request, pid):
     message = "del product"
 
     return HttpResponse(message)
+
+def order(request):
+
+    if request.method == "POST":
+        order = request.POST
+        order_pay = request.POST["order-pay"]
+        order_name = request.POST["order-name"]
+        order_tel = request.POST["order-tel"]
+        order_address = request.POST["order-address"]
+        pid = request.POST.getlist("pid")
+        qty = request.POST.getlist("qty")
+        products = []
+        for i in range(len(pid)):
+            product = []
+            product = [pid[i], qty[i]]
+            products.append(product)
+
+    return render(request, 'shopapp/order.html', locals())

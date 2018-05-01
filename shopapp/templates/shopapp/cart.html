@@ -6,6 +6,7 @@
 {% block script %}
 
 <script>
+
     $(function() {
 
         // minus quantity
@@ -13,31 +14,36 @@
             var pid = $(this).attr("id");
             var unitprice = $("#unitp" + pid).html();
             var subtotal= $("#sub" + pid).html();
-            $("#qty" + pid).html(parseInt($("#qty" + pid).html()) - 1);
             var qty = parseInt($("#qty" + pid).html());
+            if (qty === 1) {
+                alert("If you want delete this product, click trash can icon right.");
+                return;
+            }
+            qty = qty - 1;
+            $("#qty" + pid).html(qty);
             unitprice = unitprice.split("$ ");
 //            unitprice = unitprice[1].split(" ");
             unitprice = parseInt(unitprice[1]);
             subtotal = subtotal.split("$ ");
 //            subtotal = subtotal[1].split(" ");
             subtotal = parseInt(subtotal[1]);
-            if (parseInt($("#qty" + pid).html()) === 0) {
-                $("#div" + pid).hide();
-                $.ajax({
-                    url: "/del_cart/" + pid,
-                    type: "GET",
-                    success: function(message) {
-                        $("#div" + pid).hide();
-                        alert(message);
-                        var total = $("#total").html();
-                        total = total.split("$ ");
-                        total = parseInt(total[1]) - unitprice;
-                        alert(total);
-                        $("#total").html("NT$ " + total);
-                    }
-                })
-                return;
-            }
+//            if (parseInt($("#qty" + pid).html()) === 0) {
+//                $("#div" + pid).hide();
+//                $.ajax({
+//                    url: "/del_cart/" + pid,
+//                    type: "GET",
+//                    success: function(message) {
+//                        $("#div" + pid).hide();
+//                        alert(message);
+//                        var total = $("#total").html();
+//                        total = total.split("$ ");
+//                        total = parseInt(total[1]) - unitprice;
+//                        alert(total);
+//                        $("#total").html("NT$ " + total);
+//                    }
+//                })
+//                return;
+//            }
 //            unitprice = unitprice.split(" ");
 //            for (var i = 0; i < unitprice.length; i++) {
 //                if (unitprice[i] == "NT$") {
@@ -58,12 +64,13 @@
                 url: "/edit_cart/" + pid + "/" + 0,
                 type: "GET",
                 success: function(message){
-                    alert(message);
+//                    alert(message);
                     var total = $("#total").html();
                     total = total.split("$ ");
                     total = parseInt(total[1]) - unitprice;
-                    alert(total);
+//                    alert(total);
                     $("#total").html("NT$ " + total);
+                    $("#checkqty" + pid).attr("value", qty);
                 }
             })
         });
@@ -73,8 +80,9 @@
             var pid = $(this).attr("id");
             var unitprice = $("#unitp" + pid).html();
             var subtotal= $("#sub" + pid).html();
-            $("#qty" + pid).html(parseInt($("#qty" + pid).html()) + 1);
             var qty = parseInt($("#qty" + pid).html());
+            qty = qty + 1;
+            $("#qty" + pid).html(qty);
             unitprice = unitprice.split("$ ");
 //            unitprice = unitprice[1].split(" ");
             unitprice = parseInt(unitprice[1]);
@@ -101,12 +109,13 @@
                 url: "/edit_cart/" + pid + "/" + 1,
                 type: "GET",
                 success: function(message){
-                    alert(message);
+//                    alert(message);
                     var total = $("#total").html();
                     total = total.split("$ ");
                     total = parseInt(total[1]) + unitprice;
-                    alert(total);
+//                    alert(total);
                     $("#total").html("NT$ " + total);
+                    $("#checkqty" + pid).attr("value", qty);
                 }
             })
         });
@@ -125,10 +134,22 @@
                     var subtotal = $("#sub" + pid).html();
                     subtotal = subtotal.split("$ ");
                     total = parseInt(total[1]) - parseInt(subtotal[1]);
-                    alert(total);
+//                    alert(total);
                     $("#total").html("NT$ " + total);
+                    $("#checkpid" + pid).remove();
+                    $("#checkqty" + pid).remove();
                 }
             })
+        });
+
+        $("#paycard").click(function() {
+            $(this).prop("checked", true);
+            $("#paypod").prop("checked", false);
+        });
+
+        $("#paypod").click(function() {
+            $(this).prop("checked", true);
+            $("#paycard").prop("checked", false);
         });
     });
 
@@ -214,13 +235,39 @@
     </div>
 
     <div class="row">
+        <form class="checkout" action="{% url 'order' %}" method="POST">
+            {% csrf_token %}
         <div class="col-md-7 col-md-offset-1">
+            <label>Select a payment method</label><br />
+            <input id="paycard" name="order-pay" type="radio" value="card" /> <label for="paycard">Credit card</label><br />
+            <input id="paypod" name="order-pay" type="radio" value="pod" /> <label for="paypod">Pay on Delivery</label><br />
+            <table>
+                <tr>
+                    <td><label for="order-name">Name</label><br /></td>
+                    <td><input id="order-name" name="order-name" type="text" size="50" /></td>
+                </tr>
+                <tr>
+                    <td><label for="order-tel">Phone</label></td>
+                    <td><input id="order-tel" name="order-tel" type="tel" size="50" /><br /></td>
+                </tr>
+                <tr>
+                    <td><label for="order-address">Address</label></td>
+                    <td><input id="order-address" name="order-address" type="text" size="50" /><br /></td>
+                </tr>
+            </table>
 
+
+
+            {% for p in products %}
+                <input id="checkpid{{ p.6 }}" type="hidden" name="pid" value="{{ p.6 }}" />
+                <input id="checkqty{{ p.6 }}" type="hidden" name="qty" value="{{ p.4 }}" />
+            {% endfor %}
         </div>
         <div class="col-md-3">
             <label class="pull-left">Total: </label><label id="total" class="pull-right">NT$ {{ total }}</label><br />
-            <button class="btn btn-block">Checkout</button>
+            <input class="btn btn-block btn-success" type="submit" value="Checkout" />
         </div>
+        </form>
     </div>
 
 </div>

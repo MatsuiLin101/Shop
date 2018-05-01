@@ -2,6 +2,26 @@
 
 {% block title %}101SHOP{% endblock %}
 
+
+{% block script %}
+
+<script>
+    $(function() {
+        $("button").click(function() {
+            $.ajax({
+                url: "/add_cart/" + $(this).attr("id") + "/" + 1,
+                type: "GET",
+                success: function(message) {
+                    alert(message);
+                }
+            })
+        });
+    });
+</script>
+
+{% endblock %}
+
+
 {% block content %}
 
 <br />
@@ -35,7 +55,7 @@
                             <p>${{ p.price }}</p>
                             <p>Quantity: {{ p.quantity }}</p>
                             <p>{{ p.description|truncatechars:20 }}</p>
-                            <button class="btn btn-success">Add to Cart</button>
+                            <button id="{{ p.id }}" class="btn btn-success btn-block">Add to Cart</button>
                         </div>
                     </div>
                   </div>

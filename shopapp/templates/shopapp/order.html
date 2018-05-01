@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}101SHOP - Order{% endblock %}
+
+{% block content %}
+
+<br />
+<br />
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="page-header">
+                <h1 class="text-center">Order</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            {{ order }}<br />
+            {{ order_pay }}<br>
+            {% for p in products %}
+                {{ p.0 }}___{{ p.1 }}<br>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
