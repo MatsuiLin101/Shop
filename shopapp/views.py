@@ -135,7 +135,7 @@ def delete_category(request, id):
 def delete_product(request, id):
 
     product = models.Product.objects.get(id=id)
-    product.img.delete(save=True)
+#    product.img.delete(save=True)
     product.delete()
 
     return redirect(admin_dashboard)
