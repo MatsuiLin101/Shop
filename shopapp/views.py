@@ -223,8 +223,14 @@ def del_cart(request, pid):
     for c in carts:
         if c[0] != pid:
             new_carts.append(c)
-    request.session["cart"] = new_carts
-    message = "del product"
+    if len(new_carts) == 0:
+        message = "No product in cart"
+        del request.session["cart"]
+
+        return HttpResponse(message)
+    else:
+        request.session["cart"] = new_carts
+        message = "del product"
 
     return HttpResponse(message)
 

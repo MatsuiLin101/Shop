@@ -27,9 +27,6 @@
             $.ajax({
                 url: "/add_cart/" + $("table").attr("id") + "/" + $("#total").html(),
                 type: "GET",
-                success: function(message) {
-                    alert(message);
-                }
             })
         });
     });
@@ -76,7 +73,7 @@
                         <br />
                         <button id="countdown" class="btn btn-default">-</button><button id="total" class="btn btn-default">1</button><button id="countup" class="btn btn-default">+</button><br />
                         <br />
-                        <button id="addcart" class="btn btn-success btn-block">Add to Cart</button>
+                        <button id="addcart" class="btn btn-success btn-block" data-toggle="modal" data-target="#addModal">Add to Cart</button>
                     </td>
                 </tr>
                 <tr>
@@ -85,6 +82,22 @@
                     </td>
                 </tr>
             </table>
+        </div>
+
+        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+              </div>
+              <div class="modal-body">
+                Add to cart
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
         </div>
     </div>
 

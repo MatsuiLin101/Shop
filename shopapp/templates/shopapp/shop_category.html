@@ -11,9 +11,6 @@
             $.ajax({
                 url: "/add_cart/" + $(this).attr("id") + "/" + 1,
                 type: "GET",
-                success: function(message) {
-                    alert(message);
-                }
             })
         });
     });
@@ -27,6 +24,7 @@
 <br />
 <br />
 <div class="container">
+
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="page-header">
@@ -55,7 +53,7 @@
                             <p>${{ p.price }}</p>
                             <p>Inventory: {{ p.inventory }}</p>
                             <p>{{ p.description|truncatechars:20 }}</p>
-                            <button id="{{ p.id }}" class="btn btn-success btn-block">Add to Cart</button>
+                            <button id="{{ p.id }}" class="btn btn-success btn-block" data-toggle="modal" data-target="#addModal">Add to Cart</button>
                         </div>
                     </div>
                   </div>
@@ -64,36 +62,22 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-2">
-
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+          </div>
+          <div class="modal-body">
+            Add to cart
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+          </div>
         </div>
-        <div class="col-md-10">
-            <ul class="pagination">
-               <li>
-                   <a href="#">Prev</a>
-               </li>
-               <li>
-                   <a href="#">1</a>
-               </li>
-               <li>
-                   <a href="#">2</a>
-               </li>
-               <li>
-                   <a href="#">3</a>
-               </li>
-               <li>
-                   <a href="#">4</a>
-               </li>
-               <li>
-                   <a href="#">5</a>
-               </li>
-               <li>
-                   <a href="#">Next</a>
-               </li>
-            </ul>
-        </div>
+      </div>
     </div>
+
 </div>
 
 {% endblock %}

@@ -58,3 +58,8 @@
   margin-right: auto;
   margin-left: auto;
 }
+
+.cart-noproduct {
+  margin-top: 50px;
+  text-align: center;
+}
