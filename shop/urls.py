@@ -39,4 +39,7 @@ urlpatterns = [
     path('del_cart/<int:pid>', views.del_cart, name="del-cart"),
     path('edit_cart/<int:pid>/<int:qty>', views.edit_cart, name="edit-cart"),
     path('order/', views.order, name="order"),
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('sign_up/', views.sign_up, name='sign-up'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

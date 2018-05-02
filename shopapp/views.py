@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
+from django.contrib.auth import authenticate
+from django.contrib import auth
+from django.contrib.auth.models import User
 
 from . import models, forms
 
@@ -258,3 +261,49 @@ def order(request):
         del request.session["cart"]
 
     return render(request, 'shopapp/order.html', locals())
+
+def login(request):
+
+    if request.method == "POST":
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = auth.authenticate(username=username, password=password)
+        try:
+            if user.is_active:
+                auth.login(request, user)
+                return redirect(home)
+        except:
+            message = "Login fail or this account doesn't active"
+    else:
+        if request.user.is_authenticated:
+            return redirect(home)
+
+    return render(request, 'shopapp/login.html', locals())
+
+def logout(request):
+    auth.logout(request)
+
+    return redirect(home)
+
+def sign_up(request):
+
+    if request.method == "POST":
+        username = request.POST["username"]
+        try:
+            user = User.objects.get(username=username)
+        except:
+            user = None
+        if user != None:
+            message= "This account already exists"
+            return render(request, 'shopapp/login.html', {"message": message})
+        else:
+            password = request.POST["password"]
+            email = request.POST["email"]
+            user = User.objects.create_user(username, email, password)
+            user.is_staff = False
+            user.save()
+
+            user = auth.authenticate(username=username, password=password)
+            auth.login(request, user)
+
+            return redirect(home)
