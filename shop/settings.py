@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
+    'ml101-shop.herokuapp.com',
 ]
 
 
