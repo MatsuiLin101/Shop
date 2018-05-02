@@ -141,7 +141,7 @@ def cart(request):
     else:
         message = "No product in cart"
 
-        return render(request, 'shoaapp/cart.html', locals())
+        return render(request, 'shopapp/cart.html', locals())
 
     total = 0
     products = []
@@ -221,10 +221,10 @@ def order(request):
 
     if request.method == "POST":
         order = request.POST
-        order_pay = request.POST["order-pay"]
         order_name = request.POST["order-name"]
         order_tel = request.POST["order-tel"]
         order_address = request.POST["order-address"]
+        order_pay = request.POST["order-pay"]
         pid = request.POST.getlist("pid")
         qty = request.POST.getlist("qty")
         products = []
@@ -232,5 +232,11 @@ def order(request):
             product = []
             product = [pid[i], qty[i]]
             products.append(product)
+
+        new_order = models.Order.objects.create(name=request.user, oid="20180502000002", order_name=order_name, order_tel=order_tel, order_address=order_address, pay="CARD", status=1)
+        for p in products:
+            product = models.Product.objects.get(id=p[0])
+            order_item = models.OrderItem.objects.create(oid=new_order, product=product, price=product.price, quantity=p[1])
+        del request.session["cart"]
 
     return render(request, 'shopapp/order.html', locals())
