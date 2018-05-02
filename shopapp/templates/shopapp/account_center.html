@@ -25,7 +25,42 @@
       </div>
     </div>
     <div class="col-md-10">
-      123
+      <table class="table">
+        <tr class="text-center">
+          <td>Order ID</td>
+          <td>Name</td>
+          <td>Tel</td>
+          <td>Address</td>
+          <td>Pay</td>
+          <td>Status</td>
+          <td>Create</td>
+          <td>Finish</td>
+        </tr>
+      {% for o in orders %}
+        <tr class="text-center">
+          <td>{{ o.oid }}</td>
+          <td>{{ o.order_name }}</td>
+          <td>{{ o.order_tel }}</td>
+          <td>{{ o.order_address }}</td>
+          <td>{{ o.pay }}</td>
+          {% if o.status == 1 %}
+            <td>PENDING</td>
+          {% elif o.status == 2 %}
+            <td>PROCESSING</td>
+          {% elif o.status == 3 %}
+            <td>ON THE WAY</td>
+          {% else %}
+            <td>DELIVERED</td>
+          {% endif %}
+          <td>{{ o.order_date }}</td>
+          {% if o.finish_date == None %}
+            <td></td>
+          {% else %}
+            <td>{{ o.finish_date }}</td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+      </table>
     </div>
   </div>
 </div>

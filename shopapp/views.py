@@ -341,4 +341,6 @@ def sign_up(request):
 @login_required(login_url='/login/')
 def account_center(request):
 
+    orders = models.Order.objects.filter(name=request.user)
+
     return render(request, 'shopapp/account_center.html', locals())
