@@ -275,7 +275,10 @@ def order(request):
         order_name = request.POST["order-name"]
         order_tel = request.POST["order-tel"]
         order_address = request.POST["order-address"]
-        order_pay = request.POST["order-pay"]
+        if request.POST["order-pay"] == "pod":
+            order_pay = "POD"
+        else:
+            order_pay = "CARD"
         pid = request.POST.getlist("pid")
         qty = request.POST.getlist("qty")
         products = []
@@ -288,8 +291,9 @@ def order(request):
             total += int(p.price) * int(qty[i])
 
         oid = time.strftime("%Y%m%d%H%M%S", time.localtime())
+        oid = oid + str(request.user.id)
 
-        new_order = models.Order.objects.create(name=request.user, oid=oid, order_name=order_name, order_tel=order_tel, order_address=order_address, pay="CARD", status=1, total=total)
+        new_order = models.Order.objects.create(name=request.user, oid=oid, order_name=order_name, order_tel=order_tel, order_address=order_address, pay=order_pay, status=1, total=total)
         for p in products:
             product = models.Product.objects.get(id=p[0])
             subtotal = int(product.price) * int(p[1])

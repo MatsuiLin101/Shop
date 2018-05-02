@@ -42,7 +42,7 @@ class Order(models.Model):
     }
 
     name = models.ForeignKey(User, on_delete=models.CASCADE)
-    oid = models.CharField(max_length=14, null=False)
+    oid = models.CharField(max_length=20, null=False)
     order_name = models.CharField(max_length=20, null=False)
     order_tel = models.PositiveIntegerField()
     order_address = models.CharField(max_length=100, null=False)
