@@ -19,7 +19,7 @@
                     <li><a href="{% url 'admin-dashboard' %}" class="glyphicon glyphicon-dashboard"></a></li>
                 {% endif %}
                 <li><a href="{% url 'cart' %}" class="glyphicon glyphicon-shopping-cart"></a></li>
-                <li><a href="{% url 'home' %}" class="glyphicon glyphicon-user"></a></li>
+                <li><a href="{% url 'account-center' %}" class="glyphicon glyphicon-user"></a></li>
                 {% if not request.user.is_authenticated %}
                     <li><a href="{% url 'login' %}">Login/Signup</a></li>
                 {% endif %}

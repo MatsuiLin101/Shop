@@ -337,3 +337,8 @@ def sign_up(request):
             auth.login(request, user)
 
             return redirect(home)
+
+@login_required(login_url='/login/')
+def account_center(request):
+
+    return render(request, 'shopapp/account_center.html', locals())

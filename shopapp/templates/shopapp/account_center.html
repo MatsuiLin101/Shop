@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}101SHOP - Account Center{% endblock %}
+
+{% block content %}
+
+<br />
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="page-header">
+            <h1 class="text-center">Account Center</h1>
+        </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-2">
+      <div>
+        <img src="https://i.imgur.com/kjsMAx2.jpg" class="img-circle" style="height:100px; width:100px; display:block; margin:auto;" />
+      </div>
+      <div>
+        <h4 class="text-center">Hi, {{ request.user.username }}</h4>
+      </div>
+    </div>
+    <div class="col-md-10">
+      123
+    </div>
+  </div>
+</div>
+
+{% endblock %}
