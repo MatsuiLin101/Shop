@@ -28,9 +28,7 @@
       <table class="table">
         <tr class="text-center">
           <td>Order ID</td>
-          <td>Name</td>
-          <td>Tel</td>
-          <td>Address</td>
+          <td>Total</td>
           <td>Pay</td>
           <td>Status</td>
           <td>Create</td>
@@ -39,9 +37,7 @@
       {% for o in orders %}
         <tr class="text-center">
           <td><a href="{% url 'account-order' o.oid  %}">{{ o.oid }}</a></td>
-          <td>{{ o.order_name }}</td>
-          <td>{{ o.order_tel }}</td>
-          <td>{{ o.order_address }}</td>
+          <td>NT$ {{ o.total }}</td>
           <td>{{ o.pay }}</td>
           {% if o.status == 1 %}
             <td>PENDING</td>

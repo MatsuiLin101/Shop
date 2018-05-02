@@ -279,17 +279,21 @@ def order(request):
         pid = request.POST.getlist("pid")
         qty = request.POST.getlist("qty")
         products = []
+        total = 0
         for i in range(len(pid)):
             product = []
             product = [pid[i], qty[i]]
             products.append(product)
+            p = models.Product.objects.get(id=pid[i])
+            total += int(p.price) * int(qty[i])
 
         oid = time.strftime("%Y%m%d%H%M%S", time.localtime())
 
-        new_order = models.Order.objects.create(name=request.user, oid=oid, order_name=order_name, order_tel=order_tel, order_address=order_address, pay="CARD", status=1)
+        new_order = models.Order.objects.create(name=request.user, oid=oid, order_name=order_name, order_tel=order_tel, order_address=order_address, pay="CARD", status=1, total=total)
         for p in products:
             product = models.Product.objects.get(id=p[0])
-            order_item = models.OrderItem.objects.create(oid=new_order, product=product, price=product.price, quantity=p[1])
+            subtotal = int(product.price) * int(p[1])
+            order_item = models.OrderItem.objects.create(oid=new_order, product=product, price=product.price, quantity=p[1], subtotal=subtotal)
         del request.session["cart"]
 
     return render(request, 'shopapp/order.html', locals())
