@@ -127,6 +127,7 @@
                 url: "/del_cart/" + pid,
                 type: "GET",
                 success: function(message) {
+                    $("#check" + pid).hide();
                     $("#div" + pid).hide();
                     var total = $("#total").html();
                     total = total.split("$ ");
@@ -147,11 +148,25 @@
         $("#paycard").click(function() {
             $(this).prop("checked", true);
             $("#paypod").prop("checked", false);
+            $("#check-pay").val("card");
+            $("#check-pay-text").html("Credit Card");
         });
 
         $("#paypod").click(function() {
             $(this).prop("checked", true);
             $("#paycard").prop("checked", false);
+            $("#check-pay").val("pod");
+            $("#check-pay-text").html("Pay on Delivery");
+        });
+
+        $("#check-order").click(function() {
+            $("#check-name").val($("#order-name").val());
+            $("#check-name-text").html($("#order-name").val());
+            $("#check-tel").val($("#order-tel").val());
+            $("#check-tel-text").html($("#order-tel").val());
+            $("#check-address").val($("#order-address").val());
+            $("#check-address-text").html($("#order-address").val());
+            $("#check-total-text").html($("#total").html());
         });
     });
 
@@ -236,7 +251,7 @@
                   </div>
                   <!-- del product -->
                   <div class="col-md-1 cart-delete">
-                      <span id="{{ p.6 }}" class="glyphicon glyphicon-trash product-del" data-toggle="modal" data-target="#cartModal"></span>
+                      <span id="{{ p.6 }}" class="glyphicon glyphicon-trash product-del" data-toggle="modal" data-target="#cartDelModal"></span>
                   </div>
               </div>
               {% endfor %}
@@ -244,19 +259,17 @@
       </div>
 
       <div class="row">
-          <form class="checkout" action="{% url 'order' %}" method="POST">
-              {% csrf_token %}
           <div class="col-md-7 col-md-offset-1">
               <label>Select a payment method</label><br />
-              <input id="paycard" name="order-pay" type="radio" value="card" /> <label for="paycard">Credit card</label><br />
-              <input id="paypod" name="order-pay" type="radio" value="pod" /> <label for="paypod">Pay on Delivery</label><br />
+              <input id="paycard" name="order-pay" type="radio" value="card" /> <label for="paycard">Credit Card</label><br />
+              <input id="paypod" name="order-pay" type="radio" value="pod" checked /> <label for="paypod">Pay on Delivery</label><br />
               <table>
                   <tr>
-                      <td><label for="order-name">Name</label><br /></td>
+                      <td><label for="order-name">Receiver</label><br /></td>
                       <td><input id="order-name" name="order-name" type="text" size="50" /></td>
                   </tr>
                   <tr>
-                      <td><label for="order-tel">Phone</label></td>
+                      <td><label for="order-tel">Contact Number</label></td>
                       <td><input id="order-tel" name="order-tel" type="tel" size="50" /><br /></td>
                   </tr>
                   <tr>
@@ -264,23 +277,15 @@
                       <td><input id="order-address" name="order-address" type="text" size="50" /><br /></td>
                   </tr>
               </table>
-
-
-
-              {% for p in products %}
-                  <input id="checkpid{{ p.6 }}" type="hidden" name="pid" value="{{ p.6 }}" />
-                  <input id="checkqty{{ p.6 }}" type="hidden" name="qty" value="{{ p.4 }}" />
-              {% endfor %}
           </div>
           <div class="col-md-3">
               <label class="pull-left">Total: </label><label id="total" class="pull-right">NT$ {{ total }}</label><br />
-              <input class="btn btn-block btn-success" type="submit" value="Checkout" />
+              <button id="check-order" class="btn btn-block btn-success" data-toggle="modal" data-target="#cartCheckModal">Checkout</button>
           </div>
-          </form>
       </div>
     {% endif %}
 
-    <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModalLabel" aria-hidden="true">
+    <div id="cartDelModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cartDelModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -295,11 +300,67 @@
         </div>
       </div>
     </div>
-    <script>
-      $(function () { $('#myModal').modal({
-      	keyboard: true
-      })});
-    </script>
+
+    <div id="cartCheckModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cartCheckModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form action="{% url 'order' %}" method="post">
+            {% csrf_token %}
+            <div class="modal-header">
+              <h3 class="text-center">Check Order</h3>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <tr class="text-center">
+                  <td colspan="2">Product Information</td>
+                  <td></td>
+                  <td>Unit Price</td>
+                  <td>Quantity</td>
+                  <td>Subtotal</td>
+                </tr>
+                {% for p in products %}
+                  <tr id="check{{ p.6 }}" class="text-center">
+                    <td><img src="{{ p.0 }}" style="width:50px; height:50px;" /></td>
+                    <td>{{ p.1 }}</td>
+                    <td></td>
+                    <td>NT$ {{ p.3 }}</td>
+                    <td>{{ p.4 }}</td>
+                    <td>NT$ {{ p.5 }}</td>
+                  </tr>
+                {% endfor %}
+                <tr>
+                  <td colspan="3">Total</td>
+                  <td colspan="3" id="check-total-text">NT$ </td>
+                </tr>
+                <tr>
+                  <td colspan="3">Payment Method</td>
+                  <td colspan="3"><input id="check-pay" type="hidden" name="order-pay" value="pod"><span id="check-pay-text">Pay on Delivery</span></td>
+                </tr>
+                <tr>
+                  <td colspan="3">Reciever</td>
+                  <td colspan="3"><input id="check-name" type="hidden" name="order-name" value=""><span id="check-name-text"></span></td>
+                </tr>
+                <tr>
+                  <td colspan="3">Contact Number</td>
+                  <td colspan="3"><input id="check-tel" type="hidden" name="order-tel" value=""><span id="check-tel-text"></span></td>
+                </tr>
+                <tr>
+                  <td colspan="3">Address</td>
+                  <td colspan="3"><input id="check-address" type="hidden" name="order-address" value=""><span id="check-address-text"></span></td>
+                </tr>
+              </table>
+            </div>
+            <div class="modal-footer">
+              {% for p in products %}
+                <input id="checkpid{{ p.6 }}" type="hidden" name="pid" value="{{ p.6 }}" />
+                <input id="checkqty{{ p.6 }}" type="hidden" name="qty" value="{{ p.4 }}" />
+              {% endfor %}
+              <input class="btn btn-block btn-success" type="submit" value="Confirm Order">
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
 
 
