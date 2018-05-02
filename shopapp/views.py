@@ -358,11 +358,3 @@ def account_order(request, oid):
     items = models.OrderItem.objects.filter(oid=order)
 
     return render(request, 'shopapp/account_order.html', locals())
-
-def del_all_order(request):
-
-    orders = models.Order.objects.all()
-    for o in orders:
-        o.delete()
-
-    return redirect(home)
