@@ -38,7 +38,7 @@
         </tr>
       {% for o in orders %}
         <tr class="text-center">
-          <td>{{ o.oid }}</td>
+          <td><a href="{% url 'account-order' o.oid  %}">{{ o.oid }}</a></td>
           <td>{{ o.order_name }}</td>
           <td>{{ o.order_tel }}</td>
           <td>{{ o.order_address }}</td>

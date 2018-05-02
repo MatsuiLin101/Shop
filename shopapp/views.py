@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from . import models, forms
 
-import random, string
+import random, string, time
 
 # Create your views here.
 
@@ -284,7 +284,9 @@ def order(request):
             product = [pid[i], qty[i]]
             products.append(product)
 
-        new_order = models.Order.objects.create(name=request.user, oid="20180502000002", order_name=order_name, order_tel=order_tel, order_address=order_address, pay="CARD", status=1)
+        oid = time.strftime("%Y%m%d%H%M%S", time.localtime())
+
+        new_order = models.Order.objects.create(name=request.user, oid=oid, order_name=order_name, order_tel=order_tel, order_address=order_address, pay="CARD", status=1)
         for p in products:
             product = models.Product.objects.get(id=p[0])
             order_item = models.OrderItem.objects.create(oid=new_order, product=product, price=product.price, quantity=p[1])
@@ -344,3 +346,11 @@ def account_center(request):
     orders = models.Order.objects.filter(name=request.user)
 
     return render(request, 'shopapp/account_center.html', locals())
+
+@login_required(login_url='/login/')
+def account_order(request, oid):
+
+    order = models.Order.objects.get(oid=oid)
+    items = models.OrderItem.objects.filter(oid=order)
+
+    return render(request, 'shopapp/account_order.html', locals())

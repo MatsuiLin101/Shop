@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}101SHOP - Account{% endblock %}
+
+{% block content %}
+
+<br />
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="page-header">
+        <h1 class="text-center">{{ oid }}</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-2">
+      <div>
+        <img src="https://i.imgur.com/kjsMAx2.jpg" class="img-circle" style="height:100px; width:100px; display:block; margin:auto;" />
+      </div>
+      <div>
+        <h4 class="text-center">Hi, {{ request.user.username }}</h4>
+      </div>
+    </div>
+    <div class="col-md-10">
+      <div class="row">
+        <table class="table table-cell" style="table-layout:fixed;">
+          <tr>
+            <td class="text-center">Receiver</td>
+            <td>{{ order.order_name }}</td>
+          </tr>
+          <tr>
+            <td class="text-center">Contact Number</td>
+            <td>{{ order.order_tel }}</td>
+          </tr>
+          <tr>
+            <td class="text-center">Address</td>
+            <td>{{ order.order_address }}</td>
+          </tr>
+        </table>
+      </div>
+      <table class="table">
+        {% for i in items %}
+          <tr>
+            <td><img src="{{ i.product.img }}" style="height:100px; width:100px;" /></td>
+            <td>{{ i.product }}</td>
+            <td>{{ i.price }}</td>
+            <td>{{ i.quantity }}</td>
+            <td>subtotal</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
