@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from . import models, forms
 
@@ -28,6 +29,9 @@ def home(request):
 
 def add_product(request):
 
+    if not request.user.is_staff:
+        return redirect(home)
+
     if request.method == "POST":
         category = request.POST["category"]
         name = request.POST["name"]
@@ -49,6 +53,9 @@ def add_product(request):
     return render(request, 'shopapp/add_product.html', locals())
 
 def add_category(request):
+
+    if not request.user.is_staff:
+        return redirect(home)
 
     if request.method == "POST":
         form = forms.CategoryForm(request.POST)
@@ -89,12 +96,18 @@ def shop_category(request, category):
 
 def admin_dashboard(request):
 
+    if not request.user.is_staff:
+        return redirect(home)
+
     categories = models.Category.objects.all()
     products = models.Product.objects.all()
 
     return render(request, 'shopapp/admin_dashboard.html', locals())
 
 def dashboard_category(request, category):
+
+    if not request.user.is_staff:
+        return redirect(home)
 
     category = models.Category.objects.get(name=category)
     categories = models.Category.objects.all()
@@ -103,6 +116,9 @@ def dashboard_category(request, category):
     return render(request, 'shopapp/dashboard_category.html', locals())
 
 def edit_category(request, id):
+
+    if not request.user.is_staff:
+        return redirect(home)
 
     category = models.Category.objects.get(id=id)
 
@@ -115,6 +131,9 @@ def edit_category(request, id):
     return render(request, 'shopapp/edit_category.html', locals())
 
 def edit_product(request, id):
+
+    if not request.user.is_staff:
+        return redirect(home)
 
     product = models.Product.objects.get(id=id)
 
@@ -130,12 +149,18 @@ def edit_product(request, id):
 
 def delete_category(request, id):
 
+    if not request.user.is_staff:
+        return redirect(home)
+
     category = models.Category.objects.get(id=id)
     category.delete()
 
     return redirect(admin_dashboard)
 
 def delete_product(request, id):
+
+    if not request.user.is_staff:
+        return redirect(home)
 
     product = models.Product.objects.get(id=id)
 #    product.img.delete(save=True)
@@ -150,6 +175,7 @@ def detail_product(request, id):
 
     return render(request, 'shopapp/detail_product.html', locals())
 
+@login_required(login_url='/login/')
 def cart(request):
     if "cart" in request.session:
         carts = request.session["cart"]
@@ -175,6 +201,7 @@ def cart(request):
 
     return render(request, 'shopapp/cart.html', locals())
 
+@login_required(login_url='/login/')
 def add_cart(request, pid, quantity):
 
     if not "cart" in request.session:
@@ -201,6 +228,7 @@ def add_cart(request, pid, quantity):
 
     return HttpResponse(message)
 
+@login_required(login_url='/login/')
 def edit_cart(request, pid, qty):
 
     carts = request.session["cart"]
@@ -220,6 +248,7 @@ def edit_cart(request, pid, qty):
 
     return HttpResponse(message)
 
+@login_required(login_url='/login/')
 def del_cart(request, pid):
 
     carts = request.session["cart"]
@@ -238,6 +267,7 @@ def del_cart(request, pid):
 
     return HttpResponse(message)
 
+@login_required(login_url='/login/')
 def order(request):
 
     if request.method == "POST":
