@@ -33,7 +33,7 @@
                         <div class="caption">
                             <h4>{{ p.name }}</h4>
                             <p>${{ p.price }}</p>
-                            <p>Quantity: {{ p.quantity }}</p>
+                            <p>Inventory: {{ p.inventory }}</p>
                             <p>{{ p.description|truncatechars:20 }}</p>
                             <a href="{% url 'delete-product' p.id %}"class="btn btn-danger glyphicon glyphicon-trash pull-right">Delete</a>
                             <a href="{% url 'edit-product' p.id %}" class="btn btn-primary glyphicon glyphicon-edit">Edit</a>

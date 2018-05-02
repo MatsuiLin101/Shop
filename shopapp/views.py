@@ -146,7 +146,10 @@ def cart(request):
     total = 0
     products = []
     for c in carts:
-        product = models.Product.objects.get(id=c[0])
+        try:
+            product = models.Product.objects.get(id=c[0])
+        except:
+            continue
         img = product.img
         inventory = product.inventory
         price = product.price
