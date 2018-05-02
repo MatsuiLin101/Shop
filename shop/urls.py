@@ -44,4 +44,5 @@ urlpatterns = [
     path('sign_up/', views.sign_up, name='sign-up'),
     path('account/', views.account_center, name='account-center'),
     path('account/<int:oid>', views.account_order, name='account-order'),
+    path('del_all_order/', views.del_all_order, name='del-all-order'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
