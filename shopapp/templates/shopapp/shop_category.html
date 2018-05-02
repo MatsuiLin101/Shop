@@ -30,7 +30,7 @@
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="page-header">
-                <h1 class="text-center">{{ category.name }}</h1>
+                <h1 class="text-center">{{ category_name }}</h1>
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
         <div class="col-md-2">
             <ul class="list-unstyled">
                   <li><h3>Category</h3></li>
-                  <li><a href="/" class="btn btn-link">All</a></li>
+                  <li><a href="/category/All" class="btn btn-link">All</a></li>
               {% for c in categories %}
                   <li><a href="/category/{{ c.name }}" class="btn btn-link">{{ c.name }}</a></li>
               {% endfor %}
@@ -49,7 +49,7 @@
             {% for p in products %}
                 {% cycle '<div class="row"> <div class="col-md-3">' '<div class="col-md-3">' '<div class="col-md-3">' '<div class="col-md-3">' %}
                     <div class="thumbnail">
-                        <img src="/media/{{ p.img }}" class="product-img"/>
+                        <a href="{% url 'detail-product' p.id %}"><img src="/media/{{ p.img }}" class="product-img"/></a>
                         <div class="caption">
                             <h4>{{ p.name }}</h4>
                             <p>${{ p.price }}</p>

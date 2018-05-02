@@ -15,6 +15,11 @@ def home(request):
 
     categories = models.Category.objects.all()
     products = models.Product.objects.all()
+    count = 0
+    dataid = []
+    for p in products:
+        dataid.append(count)
+        count += 1
 
     return render(request, 'shopapp/home.html', locals())
 
@@ -66,9 +71,15 @@ def add_category(request):
 
 def shop_category(request, category):
 
-    category = models.Category.objects.get(name=category)
+    if category == "All":
+        category_name = "All"
+        products = models.Product.objects.all()
+    else:
+        category = models.Category.objects.get(name=category)
+        category_name = category.name
+        products = models.Product.objects.filter(category=category)
     categories = models.Category.objects.all()
-    products = models.Product.objects.filter(category=category)
+
 
     return render(request, 'shopapp/shop_category.html', locals())
 
