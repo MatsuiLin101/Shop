@@ -10,4 +10,4 @@ class CategoryForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     class Meta:
         model = models.Product
-        fields = ("category", "name", "price", "quantity", "description", "img")
+        fields = ("category", "name", "price", "inventory", "description", "img")

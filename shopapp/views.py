@@ -24,12 +24,12 @@ def add_product(request):
         category = request.POST["category"]
         name = request.POST["name"]
         price = request.POST["price"]
-        quantity = request.POST["quantity"]
+        inventory = request.POST["inventory"]
         description = request.POST["description"]
         img_file = request.FILES["img"]
         img_name = request.FILES["img"].name
         img_path = "shopapp/" + img_name
-        model_create = models.Product.objects.create(category=models.Category.objects.get(id=category), name=name, price=price, quantity=quantity, description=description)
+        model_create = models.Product.objects.create(category=models.Category.objects.get(id=category), name=name, price=price, inventory=inventory, description=description)
         model_create.img = FileSystemStorage().save(img_path, img_file)
         model_create.save()
 
@@ -148,12 +148,12 @@ def cart(request):
     for c in carts:
         product = models.Product.objects.get(id=c[0])
         img = product.img
-        quantity = product.quantity
+        inventory = product.inventory
         price = product.price
         subtotal = price * c[1]
         total += subtotal
         pid = product.id
-        products.append([img, product, quantity, price, c[1], subtotal, pid])
+        products.append([img, product, inventory, price, c[1], subtotal, pid])
 
     return render(request, 'shopapp/cart.html', locals())
 
