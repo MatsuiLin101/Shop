@@ -55,7 +55,7 @@
             <div class="carousel-inner">
               {% for p in products %}
                 <div class="item{% if forloop.first %} active{% endif %}">
-                  <a href="{% url 'detail-product' p.id %}"><img class="carousel-img" src="/media/{{ p.img }}" alt="{{ p.name }}" /></a>
+                  <a href="{% url 'detail-product' p.id %}"><img class="carousel-img" src="{{ p.img }}" alt="{{ p.name }}" /></a>
                   <div class="carousel-caption">{{ p.name }}</div>
                 </div>
               {% endfor %}

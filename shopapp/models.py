@@ -15,7 +15,8 @@ class Product(models.Model):
     price = models.IntegerField(null=False)
     inventory = models.IntegerField(null=False)
     description = models.TextField(default="No description")
-    img = models.ImageField(upload_to='shopapp/', null=False)
+    img = models.URLField(null=False)
+#    img = models.ImageField(upload_to='shopapp/', null=False)
 
     def __str__(self):
         return self.name

@@ -31,12 +31,13 @@ def add_product(request):
         price = request.POST["price"]
         inventory = request.POST["inventory"]
         description = request.POST["description"]
-        img_file = request.FILES["img"]
-        img_name = request.FILES["img"].name
-        img_path = "shopapp/" + img_name
-        model_create = models.Product.objects.create(category=models.Category.objects.get(id=category), name=name, price=price, inventory=inventory, description=description)
-        model_create.img = FileSystemStorage().save(img_path, img_file)
-        model_create.save()
+        img = request.POST["img"]
+#        img_file = request.FILES["img"]
+#        img_name = request.FILES["img"].name
+#        img_path = "shopapp/" + img_name
+        model_create = models.Product.objects.create(category=models.Category.objects.get(id=category), name=name, price=price, inventory=inventory, description=description, img=img)
+#        model_create.img = FileSystemStorage().save(img_path, img_file)
+#        model_create.save()
 
         return redirect(admin_dashboard)
     else:

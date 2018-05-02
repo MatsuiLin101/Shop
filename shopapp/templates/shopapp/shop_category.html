@@ -47,7 +47,7 @@
             {% for p in products %}
                 {% cycle '<div class="row"> <div class="col-md-3">' '<div class="col-md-3">' '<div class="col-md-3">' '<div class="col-md-3">' %}
                     <div class="thumbnail">
-                        <a href="{% url 'detail-product' p.id %}"><img src="/media/{{ p.img }}" class="product-img"/></a>
+                        <a href="{% url 'detail-product' p.id %}"><img src="{{ p.img }}" class="product-img"/></a>
                         <div class="caption">
                             <h4>{{ p.name }}</h4>
                             <p>${{ p.price }}</p>
