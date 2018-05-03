@@ -16,6 +16,7 @@
         <div>
             <ul class="nav navbar-nav navbar-right">
                 {% if request.user.is_staff %}
+                    <li><a href="{% url 'order-list' %}" class="glyphicon glyphicon-list-alt"></a></li>
                     <li><a href="{% url 'admin-dashboard' %}" class="glyphicon glyphicon-dashboard"></a></li>
                 {% endif %}
                 <li><a href="{% url 'cart' %}" class="glyphicon glyphicon-shopping-cart"></a></li>

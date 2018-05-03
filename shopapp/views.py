@@ -362,3 +362,22 @@ def account_order(request, oid):
     items = models.OrderItem.objects.filter(oid=order)
 
     return render(request, 'shopapp/account_order.html', locals())
+
+def order_list(request):
+
+    if not request.user.is_staff:
+        return redirect(home)
+
+    orders = models.Order.objects.all()
+
+    return render(request, 'shopapp/order_list.html', locals())
+
+def order_detail(request, oid):
+
+    if not request.user.is_staff:
+        return redirect(home)
+
+    order = models.Order.objects.get(oid=oid)
+    items = models.OrderItem.objects.filter(oid=order)
+
+    return render(request, 'shopapp/order_detail.html', locals())

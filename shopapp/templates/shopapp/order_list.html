@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}101SHOP - OrderList{% endblock %}
+
+{% block content %}
+
+<br />
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="page-header">
+          <h1 class="text-center">Order List</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <table class="table">
+        <tr>
+          <td>Order ID</td>
+          <td>User</td>
+          <td>Total</td>
+          <td>Pay</td>
+          <td>Status</td>
+          <td>Create</td>
+          <td>Finish</td>
+        </tr>
+        {% for o in orders %}
+          <tr>
+            <td><a href="{% url 'order-detail' o.oid %}">{{ o.oid }}</a></td>
+            <td>{{ o.name }}</td>
+            <td>NT$ {{ o.total }}</td>
+            <td>{{ o.pay }}</td>
+            {% if o.status == 1 %}
+              <td>PENDING</td>
+            {% elif o.status == 2 %}
+              <td>PROCESSING</td>
+            {% elif o.status == 3 %}
+              <td>ON THE WAY</td>
+            {% else %}
+              <td>DELIVERED</td>
+            {% endif %}
+            <td>{{ o.order_date }}</td>
+            <td>{{ o.finish_date }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
