@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'shopapp',
+    'paypal.standard.ipn'
 ]
 
 MIDDLEWARE = [
@@ -152,3 +153,8 @@ else:
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+
+
+# for paypal payment
+PAYPAL_TEST = True
+PAYPAL_RECEIVER_EMAIL = 'matsuilin101@gmail.com'

@@ -71,6 +71,8 @@
 //                    alert(total);
                     $("#total").html("NT$ " + total);
                     $("#checkqty" + pid).attr("value", qty);
+                    $("#check-qty" + pid).html(qty);
+                    $("#check-sub" + pid).html("NT$ " + subtotal);
                 }
             })
         });
@@ -116,6 +118,8 @@
 //                    alert(total);
                     $("#total").html("NT$ " + total);
                     $("#checkqty" + pid).attr("value", qty);
+                    $("#check-qty" + pid).html(qty);
+                    $("#check-sub" + pid).html("NT$ " + subtotal);
                 }
             })
         });
@@ -139,7 +143,9 @@
                     $("#checkpid" + pid).remove();
                     $("#checkqty" + pid).remove();
                     if (message == "No product in cart") {
-                        location.reload();
+                        setTimeout(function() {
+                            location.reload();
+                        }, 1000);
                     }
                 }
             })
@@ -160,13 +166,55 @@
         });
 
         $("#check-order").click(function() {
-            $("#check-name").val($("#order-name").val());
-            $("#check-name-text").html($("#order-name").val());
-            $("#check-tel").val($("#order-tel").val());
-            $("#check-tel-text").html($("#order-tel").val());
-            $("#check-address").val($("#order-address").val());
-            $("#check-address-text").html($("#order-address").val());
-            $("#check-total-text").html($("#total").html());
+            if ($("#order-name").val() === "") {
+                alert("Please enter Receiver name");
+                location.reload();
+            } else if ($("#order-tel").val() === "") {
+                alert("Please enter contact number");
+                location.reload();
+            } else if (!$.isNumeric($("#order-tel").val())) {
+                alert("Please input number in the contact number");
+                location.reload();
+            } else if ($("#order-address").val() === "") {
+                alert("Please enter address");
+                location.reload();
+            } else {
+                if ($("#paycard").prop("checked") === true) {
+                    $.ajax({
+                        url: "/payment/",
+                        type: "post",
+                        data: {
+                          "csrfmiddlewaretoken": $("input[name='csrfmiddlewaretoken']").val(),
+                          "order-name": $("#order-name").val(),
+                          "order-tel": $("#order-tel").val(),
+                          "order-address": $("#order-address").val(),
+                        },
+                        success: function(paypal_form) {
+                            alert(paypal_form)
+                            $("#form-pod").remove();
+                            $(".modal-footer").append("<form id='form-card' action='https://www.sandbox.paypal.com/cgi-bin/webscr' method='post'>" + paypal_form + "<input class='btn btn-block btn-success' type='submit' value='Confirm Order'>" + "</form>");
+    //                        $(".modal-footer").append("<input type='submit' value='Buy'>");
+    //                        $("#form-card").append("<input type='submit' value='Buy'>");
+                            $("#check-name-text").html($("#order-name").val());
+                            $("#check-tel-text").html($("#order-tel").val());
+                            $("#check-address-text").html($("#order-address").val());
+                            $("#check-total-text").html($("#total").html());
+                        }
+                    })
+                } else {
+                    $("#check-name").val($("#order-name").val());
+                    $("#check-name-text").html($("#order-name").val());
+                    $("#check-tel").val($("#order-tel").val());
+                    $("#check-tel-text").html($("#order-tel").val());
+                    $("#check-address").val($("#order-address").val());
+                    $("#check-address-text").html($("#order-address").val());
+                    $("#check-total-text").html($("#total").html());
+                }
+            }
+        });
+
+        $("#cartCheckModal").on("hidden.bs.modal", function() {
+            location.reload();
         });
     });
 
@@ -304,8 +352,6 @@
     <div id="cartCheckModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="cartCheckModal" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
-          <form action="{% url 'order' %}" method="post">
-            {% csrf_token %}
             <div class="modal-header">
               <h3 class="text-center">Check Order</h3>
             </div>
@@ -324,8 +370,8 @@
                     <td>{{ p.1 }}</td>
                     <td></td>
                     <td>NT$ {{ p.3 }}</td>
-                    <td>{{ p.4 }}</td>
-                    <td>NT$ {{ p.5 }}</td>
+                    <td id="check-qty{{ p.6 }}">{{ p.4 }}</td>
+                    <td id="check-sub{{ p.6 }}">NT$ {{ p.5 }}</td>
                   </tr>
                 {% endfor %}
                 <tr>
@@ -334,30 +380,36 @@
                 </tr>
                 <tr>
                   <td colspan="3">Payment Method</td>
-                  <td colspan="3"><input id="check-pay" type="hidden" name="order-pay" value="pod"><span id="check-pay-text">Pay on Delivery</span></td>
+                  <td colspan="3"><span id="check-pay-text">Pay on Delivery</span></td>
                 </tr>
                 <tr>
                   <td colspan="3">Reciever</td>
-                  <td colspan="3"><input id="check-name" type="hidden" name="order-name" value=""><span id="check-name-text"></span></td>
+                  <td colspan="3"><span id="check-name-text"></span></td>
                 </tr>
                 <tr>
                   <td colspan="3">Contact Number</td>
-                  <td colspan="3"><input id="check-tel" type="hidden" name="order-tel" value=""><span id="check-tel-text"></span></td>
+                  <td colspan="3"><span id="check-tel-text"></span></td>
                 </tr>
                 <tr>
                   <td colspan="3">Address</td>
-                  <td colspan="3"><input id="check-address" type="hidden" name="order-address" value=""><span id="check-address-text"></span></td>
+                  <td colspan="3"><span id="check-address-text"></span></td>
                 </tr>
               </table>
             </div>
             <div class="modal-footer">
-              {% for p in products %}
-                <input id="checkpid{{ p.6 }}" type="hidden" name="pid" value="{{ p.6 }}" />
-                <input id="checkqty{{ p.6 }}" type="hidden" name="qty" value="{{ p.4 }}" />
-              {% endfor %}
-              <input class="btn btn-block btn-success" type="submit" value="Confirm Order">
+              <form id="form-pod" action="{% url 'order' %}" method="post">
+                {% csrf_token %}
+                <input id="check-pay" type="hidden" name="order-pay" value="pod">
+                <input id="check-name" type="hidden" name="order-name" value="">
+                <input id="check-tel" type="hidden" name="order-tel" value="">
+                <input id="check-address" type="hidden" name="order-address" value="">
+                {% for p in products %}
+                  <input id="checkpid{{ p.6 }}" type="hidden" name="pid" value="{{ p.6 }}" />
+                  <input id="checkqty{{ p.6 }}" type="hidden" name="qty" value="{{ p.4 }}" />
+                {% endfor %}
+                <input class="btn btn-block btn-success" type="submit" value="Confirm Order">
+              </form>
             </div>
-          </form>
         </div>
       </div>
     </div>

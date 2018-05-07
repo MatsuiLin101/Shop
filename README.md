@@ -4,3 +4,4 @@ cart card payment
 cart order create success view
 customer can cancel order in the account center
 order list show orders by order status
+home carousel limit product quantity

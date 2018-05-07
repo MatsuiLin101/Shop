@@ -6,6 +6,12 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
+# for paypal payment
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from paypal.standard.forms import PayPalPaymentsForm
+from django.urls import reverse
+
 from . import models, forms
 
 import random, string, time
@@ -275,10 +281,11 @@ def order(request):
         order_name = request.POST["order-name"]
         order_tel = request.POST["order-tel"]
         order_address = request.POST["order-address"]
-        if request.POST["order-pay"] == "pod":
-            order_pay = "POD"
-        else:
-            order_pay = "CARD"
+        order_pay = "POD"
+#        if request.POST["order-pay"] == "pod":
+#            order_pay = "POD"
+#        else:
+#            order_pay = "CARD"
         pid = request.POST.getlist("pid")
         qty = request.POST.getlist("qty")
         products = []
@@ -381,3 +388,52 @@ def order_detail(request, oid):
     items = models.OrderItem.objects.filter(oid=order)
 
     return render(request, 'shopapp/order_detail.html', locals())
+
+def payment(request):
+
+    if request.method == "POST":
+        order_name = request.POST["order-name"]
+        order_tel = request.POST["order-tel"]
+        order_address = request.POST["order-address"]
+        order_pay = "CARD"
+
+        carts = request.session["cart"]
+        total = 0
+        for i in range(len(carts)):
+            product = models.Product.objects.get(id=carts[i][0])
+            subtotal = carts[i][1] * product.price
+            total += subtotal
+
+        oid = time.strftime("%Y%m%d%H%M%S", time.localtime())
+        oid = oid + str(request.user.id)
+
+        new_order = models.Order.objects.create(name=request.user, oid=oid, order_name=order_name, order_tel=order_tel, order_address=order_address, pay=order_pay, status=1, total=total)
+        for i in range(len(carts)):
+            product = models.Product.objects.get(id=carts[i][0])
+            subtotal = carts[i][1] * product.price
+            order_item = models.OrderItem.objects.create(oid=new_order, product=product, price=product.price, quantity=carts[i][1], subtotal=subtotal)
+
+        paypal_dict = {
+            "business": settings.PAYPAL_RECEIVER_EMAIL,
+            "amount": total,
+            "item_name": "101SHOP",
+            "invoice": "invoice-{}".format(str(oid)),
+            "currency_code": 'TWD',
+            "notify_url": "http://localhost:8000{}".format(reverse('paypal-ipn')),
+            "return_url": "http://localhost:8000/done",
+            "cancel_return": "http://localhost:8000/canceled",
+        }
+        paypal_form = PayPalPaymentsForm(initial=paypal_dict)
+
+        return HttpResponse(paypal_form)
+#    return render(request, 'shopapp/payment.html', locals())
+
+@csrf_exempt
+def payment_done(request):
+
+    return render(request, 'shopapp/payment_done.html', locals())
+
+@csrf_exempt
+def payment_canceled(request):
+
+    return render(request, 'shopapp/payment_canceled.html', locals())
