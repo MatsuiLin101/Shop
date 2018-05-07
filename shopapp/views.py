@@ -419,9 +419,9 @@ def payment(request):
             "item_name": "101SHOP",
             "invoice": "invoice-{}".format(str(oid)),
             "currency_code": 'TWD',
-            "notify_url": "https://41c3a7a2.ngrok.io{}".format(reverse('paypal-ipn')),
-            "return_url": "https://41c3a7a2.ngrok.io/done",
-            "cancel_return": "https://41c3a7a2.ngrok.io/canceled",
+            "notify_url": "https://ml101-shop.herokuapp.com{}".format(reverse('paypal-ipn')),
+            "return_url": "https://ml101-shop.herokuapp.com/done",
+            "cancel_return": "https://ml101-shop.herokuapp.com/canceled",
 #            "notify_url": "http://localhost:8000{}".format(reverse('paypal-ipn')),
 #            "return_url": "http://localhost:8000/done",
 #            "cancel_return": "http://localhost:8000/canceled",
@@ -431,6 +431,7 @@ def payment(request):
         return HttpResponse(paypal_form)
 #    return render(request, 'shopapp/payment.html', locals())
 
+@login_required(login_url='/login/')
 @csrf_exempt
 def payment_done(request):
     if "cart" in request.session:
@@ -438,7 +439,21 @@ def payment_done(request):
 
     return render(request, 'shopapp/payment_done.html', locals())
 
+@login_required(login_url='/login/')
 @csrf_exempt
 def payment_canceled(request):
 
     return render(request, 'shopapp/payment_canceled.html', locals())
+
+def status_next(request, oid):
+
+    if not request.user.is_staff:
+        return redirect(home)
+
+    order = models.Order.objects.get(oid=oid)
+    if order.status != 4:
+        order.status += 1
+        order.save()
+    status = order.status
+
+    return HttpResponse(status)

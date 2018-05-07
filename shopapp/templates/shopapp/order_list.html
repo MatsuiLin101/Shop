@@ -2,6 +2,79 @@
 
 {% block title %}101SHOP - OrderList{% endblock %}
 
+{% block script %}
+
+<script>
+
+    $(function() {
+
+      $("#btn-all").click(function() {
+        $(".tr-pending").show(500);
+        $(".tr-processing").show(500);
+        $(".tr-ontheway").show(500);
+        $(".tr-delivered").show(500);
+      });
+
+      $("#btn-pending").click(function() {
+        $(".tr-pending").show(500);
+        $(".tr-processing").hide(500);
+        $(".tr-ontheway").hide(500);
+        $(".tr-delivered").hide(500);
+      });
+
+      $("#btn-processing").click(function() {
+        $(".tr-pending").hide(500);
+        $(".tr-processing").show(500);
+        $(".tr-ontheway").hide(500);
+        $(".tr-delivered").hide(500);
+      });
+
+      $("#btn-ontheway").click(function() {
+        $(".tr-pending").hide(500);
+        $(".tr-processing").hide(500);
+        $(".tr-ontheway").show(500);
+        $(".tr-delivered").hide(500);
+      });
+
+      $("#btn-delivered").click(function() {
+        $(".tr-pending").hide(500);
+        $(".tr-processing").hide(500);
+        $(".tr-ontheway").hide(500);
+        $(".tr-delivered").show(500);
+      });
+
+      $(".btn-change").click(function() {
+        var oid = $(this).attr("id");
+        oid = parseInt(oid.split("-")[1]);
+        $.ajax({
+          url: "/status_next/" + oid,
+          type: "get",
+          success: function(status) {
+            status = parseInt(status);
+            if (status === 2) {
+              $("#stat-" + oid).html("PROCESSING");
+              $("#tr-" + oid).removeClass("tr-pending");
+              $("#tr-" + oid).addClass("tr-processing");
+            } else if (status === 3) {
+              $("#stat-" + oid).html("ONTHEWAY");
+              $("#tr-" + oid).removeClass("tr-processing");
+              $("#tr-" + oid).addClass("tr-ontheway");
+            } else {
+              $("#stat-" + oid).html("DELIVERED");
+              $("#tr-" + oid).removeClass("tr-ontheway");
+              $("#tr-" + oid).addClass("tr-delivered");
+              $("#btn-" + oid).remove();
+            }
+          }
+        });
+      });
+
+    });
+
+</script>
+
+{% endblock %}
+
 {% block content %}
 
 <br />
@@ -17,7 +90,22 @@
 
   <div class="row">
     <div class="col-md-10 col-md-offset-1">
-      <table class="table">
+      <table>
+        <tr>
+          <td><button id="btn-all" class="btn">All</button></td>
+          <td><button id="btn-pending" class="btn">Pending</button></td>
+          <td><button id="btn-processing" class="btn">Processing</button></td>
+          <td><button id="btn-ontheway" class="btn">On the Way</button></td>
+          <td><button id="btn-delivered" class="btn">Delivered</button></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <br />
+
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      <table id="table-order" class="table">
         <tr>
           <td>Order ID</td>
           <td>User</td>
@@ -27,25 +115,41 @@
           <td>Status</td>
           <td>Create</td>
           <td>Finish</td>
+          <td></td>
         </tr>
         {% for o in orders %}
-          <tr>
+          {% if o.status == 1 %}
+            <tr id="tr-{{ o.oid }}" class="tr-pending">
+          {% elif o.status == 2 %}
+            <tr id="tr-{{ o.oid }}" class="tr-processing">
+          {% elif o.status == 3 %}
+            <tr id="tr-{{ o.oid }}" class="tr-ontheway">
+          {% else %}
+            <tr id="tr-{{ o.oid }}" class="tr-delivered">
+          {% endif %}
             <td><a href="{% url 'order-detail' o.oid %}">{{ o.oid }}</a></td>
             <td>{{ o.name }}</td>
             <td>NT$ {{ o.total }}</td>
             <td>{{ o.pay }}</td>
             <td>{{ o.payment }}</td>
             {% if o.status == 1 %}
-              <td>PENDING</td>
+              <td id="stat-{{ o.oid }}">PENDING</td>
             {% elif o.status == 2 %}
-              <td>PROCESSING</td>
+              <td id="stat-{{ o.oid }}">PROCESSING</td>
             {% elif o.status == 3 %}
-              <td>ON THE WAY</td>
+              <td id="stat-{{ o.oid }}">ON THE WAY</td>
             {% else %}
-              <td>DELIVERED</td>
+              <td id="stat-{{ o.oid }}">DELIVERED</td>
             {% endif %}
             <td>{{ o.order_date }}</td>
             <td>{{ o.finish_date }}</td>
+            <td>
+              {% if o.status != 4 %}
+                <button id="btn-{{ o.oid }}" class="btn btn-change">
+                    Next
+                </button>
+              {% endif %}
+            </td>
           </tr>
         {% endfor %}
       </table>

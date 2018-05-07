@@ -46,6 +46,7 @@ urlpatterns = [
     path('account/<int:oid>', views.account_order, name='account-order'),
     path('order_list/', views.order_list, name='order-list'),
     path('order_detail/<int:oid>', views.order_detail, name='order-detail'),
+    path('status_next/<int:oid>', views.status_next, name='status-next'),
 
     # paypal
     path('paypal/', include('paypal.standard.ipn.urls')),
