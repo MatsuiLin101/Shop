@@ -157,4 +157,4 @@ else:
 
 # for paypal payment
 PAYPAL_TEST = True
-PAYPAL_RECEIVER_EMAIL = 'matsuilin101@gmail.com'
+PAYPAL_RECEIVER_EMAIL = 'matsuilin101-facilitator@gmail.com'
