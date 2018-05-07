@@ -419,9 +419,12 @@ def payment(request):
             "item_name": "101SHOP",
             "invoice": "invoice-{}".format(str(oid)),
             "currency_code": 'TWD',
-            "notify_url": "http://localhost:8000{}".format(reverse('paypal-ipn')),
-            "return_url": "http://localhost:8000/done",
-            "cancel_return": "http://localhost:8000/canceled",
+            "notify_url": "https://ml101-shop.herokuapp.com{}".format(reverse('paypal-ipn')),
+            "return_url": "https://ml101-shop.herokuapp.com/done",
+            "cancel_return": "https://ml101-shop.herokuapp.com/canceled",
+#            "notify_url": "http://localhost:8000{}".format(reverse('paypal-ipn')),
+#            "return_url": "http://localhost:8000/done",
+#            "cancel_return": "http://localhost:8000/canceled",
         }
         paypal_form = PayPalPaymentsForm(initial=paypal_dict)
 
