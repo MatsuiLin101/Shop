@@ -47,6 +47,7 @@ class Order(models.Model):
     order_tel = models.PositiveIntegerField()
     order_address = models.CharField(max_length=100, null=False)
     pay = models.CharField(max_length=10, choices=PAY_CHOICES)
+    payment = models.BooleanField(default=False)
     status = models.IntegerField(choices=STATUS_CHOICES)
     total = models.IntegerField(default=0, null=False)
     order_date = models.DateTimeField(auto_now_add=True)
