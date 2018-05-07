@@ -168,16 +168,12 @@
         $("#check-order").click(function() {
             if ($("#order-name").val() === "") {
                 alert("Please enter Receiver name");
-                location.reload();
             } else if ($("#order-tel").val() === "") {
                 alert("Please enter contact number");
-                location.reload();
             } else if (!$.isNumeric($("#order-tel").val())) {
                 alert("Please input number in the contact number");
-                location.reload();
             } else if ($("#order-address").val() === "") {
                 alert("Please enter address");
-                location.reload();
             } else {
                 if ($("#paycard").prop("checked") === true) {
                     $.ajax({
@@ -209,6 +205,7 @@
                     $("#check-address").val($("#order-address").val());
                     $("#check-address-text").html($("#order-address").val());
                     $("#check-total-text").html($("#total").html());
+                    $("#cartCheckModal").modal("toggle");
                 }
             }
         });
@@ -328,7 +325,10 @@
           </div>
           <div class="col-md-3">
               <label class="pull-left">Total: </label><label id="total" class="pull-right">NT$ {{ total }}</label><br />
+              <button id="check-order" class="btn btn-block btn-success">Checkout</button>
+<!--
               <button id="check-order" class="btn btn-block btn-success" data-toggle="modal" data-target="#cartCheckModal">Checkout</button>
+-->
           </div>
       </div>
     {% endif %}
