@@ -190,7 +190,7 @@
                           "order-address": $("#order-address").val(),
                         },
                         success: function(paypal_form) {
-                            alert(paypal_form)
+//                            alert(paypal_form)
                             $("#form-pod").remove();
                             $(".modal-footer").append("<form id='form-card' action='https://www.sandbox.paypal.com/cgi-bin/webscr' method='post'>" + paypal_form + "<input class='btn btn-block btn-success' type='submit' value='Confirm Order'>" + "</form>");
     //                        $(".modal-footer").append("<input type='submit' value='Buy'>");
