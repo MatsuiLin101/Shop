@@ -419,9 +419,9 @@ def payment(request):
             "item_name": "101SHOP",
             "invoice": "invoice-{}".format(str(oid)),
             "currency_code": 'TWD',
-            "notify_url": "https://ml101-shop.herokuapp.com{}".format(reverse('paypal-ipn')),
-            "return_url": "https://ml101-shop.herokuapp.com/done",
-            "cancel_return": "https://ml101-shop.herokuapp.com/canceled",
+            "notify_url": "https://41c3a7a2.ngrok.io{}".format(reverse('paypal-ipn')),
+            "return_url": "https://41c3a7a2.ngrok.io/done",
+            "cancel_return": "https://41c3a7a2.ngrok.io/canceled",
 #            "notify_url": "http://localhost:8000{}".format(reverse('paypal-ipn')),
 #            "return_url": "http://localhost:8000/done",
 #            "cancel_return": "http://localhost:8000/canceled",
@@ -433,6 +433,8 @@ def payment(request):
 
 @csrf_exempt
 def payment_done(request):
+    if "cart" in request.session:
+        del request.session["cart"]
 
     return render(request, 'shopapp/payment_done.html', locals())
 

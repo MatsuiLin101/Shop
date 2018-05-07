@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     'ml101-shop.herokuapp.com',
+    '41c3a7a2.ngrok.io',
 ]
 
 
