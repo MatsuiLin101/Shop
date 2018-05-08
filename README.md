@@ -2,6 +2,7 @@
 
 A website created by using Django framework for practice python and html demo on Heroku [101SHOP](https://ml101-shop.herokuapp.com/).  
 
+
 ## Website Introduction  
 
 ### Home  
@@ -60,3 +61,19 @@ A website created by using Django framework for practice python and html demo on
 
 ### Logout  
 * Logout the login account and redirect to homepage.  
+
+### REST API  
+* Order model is serializer for REST API.  
+* Using Postman give url `domain/api/shopapp/` can access order model database.  
+* CRUD is limited by authenticate.  
+
+
+## Account for test  
+
+### User  
+* account:  user  
+* password: q1w2e3r4  
+
+### Staff  
+* account:  admin  
+* password: q1w2e3r4  
