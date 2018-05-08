@@ -127,7 +127,7 @@
           {% else %}
             <tr id="tr-{{ o.oid }}" class="tr-delivered">
           {% endif %}
-            <td><a href="{% url 'order-detail' o.oid %}">{{ o.oid }}</a></td>
+            <td><a href="{% url 'order-item' o.oid %}">{{ o.oid }}</a></td>
             <td>{{ o.name }}</td>
             <td>NT$ {{ o.total }}</td>
             <td>{{ o.pay }}</td>

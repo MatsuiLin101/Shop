@@ -19,7 +19,12 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from shopapp import views
+from rest_framework.routers import DefaultRouter
+
+from shopapp import views, apis
+
+router = DefaultRouter()
+router.register('shopapp', apis.ShopappViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -44,8 +49,10 @@ urlpatterns = [
     path('sign_up/', views.sign_up, name='sign-up'),
     path('account/', views.account_center, name='account-center'),
     path('account/<int:oid>', views.account_order, name='account-order'),
-    path('order_list/', views.order_list, name='order-list'),
-    path('order_detail/<int:oid>', views.order_detail, name='order-detail'),
+    # name change to order-dashboard from order-list because of conflict with rest api
+    path('order_list/', views.order_list, name='order-dashboard'),
+    # name change to order-item from order-detail because of conflict with rest api
+    path('order_detail/<int:oid>', views.order_detail, name='order-item'),
     path('status_next/<int:oid>', views.status_next, name='status-next'),
 
     # paypal
@@ -54,5 +61,9 @@ urlpatterns = [
     path('payment/', views.payment),
     path('done/', views.payment_done),
     path('canceled/', views.payment_canceled),
+
+    # api
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
