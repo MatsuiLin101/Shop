@@ -92,11 +92,11 @@
     <div class="col-md-10 col-md-offset-1">
       <table>
         <tr>
-          <td><button id="btn-all" class="btn">All</button></td>
-          <td><button id="btn-pending" class="btn">Pending</button></td>
-          <td><button id="btn-processing" class="btn">Processing</button></td>
-          <td><button id="btn-ontheway" class="btn">On the Way</button></td>
-          <td><button id="btn-delivered" class="btn">Delivered</button></td>
+          <td><button id="btn-all" class="btn btn-default">All</button></td>
+          <td><button id="btn-pending" class="btn btn-default">Pending</button></td>
+          <td><button id="btn-processing" class="btn btn-default">Processing</button></td>
+          <td><button id="btn-ontheway" class="btn btn-default">On the Way</button></td>
+          <td><button id="btn-delivered" class="btn btn-default">Delivered</button></td>
         </tr>
       </table>
     </div>
@@ -145,7 +145,7 @@
             <td>{{ o.finish_date }}</td>
             <td>
               {% if o.status != 4 %}
-                <button id="btn-{{ o.oid }}" class="btn btn-change">
+                <button id="btn-{{ o.oid }}" class="btn btn-default btn-change">
                     Next
                 </button>
               {% endif %}
